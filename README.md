@@ -6,7 +6,7 @@
 </p>
 
 
-#### Simplest Slugify for PHP.
+# Simplest Slugify for PHP.
 
 
 ## Install
