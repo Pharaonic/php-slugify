@@ -17,6 +17,9 @@
     "require": {
         "php": ">=7.0"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^6.5"
+    },
     "config": {
         "sort-packages": true
     },
@@ -27,6 +30,11 @@
         "files": [
             "src/Helpers.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Pharaonic\\Slugify\\Tests\\": "tests"
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true
