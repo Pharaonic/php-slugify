@@ -6,9 +6,9 @@
   <a href="https://php.net" target="_blank"><img src="https://img.shields.io/badge/PHP%20Version->=7.2-blue" alt="PHP Version : >= 7.2"></a>
   <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square" alt="Source">
   <br>
-  <a href="https://github.com/Pharaonic/php-dot-array" target="_blank"><img src="https://img.shields.io/badge/source-pharaonic/php--dot--array-blue.svg?style=flat-square" alt="Source"></a>
-  <a href="https://packagist.org/packages/pharaonic/php-dot-array" target="_blank"><img src="https://img.shields.io/packagist/v/pharaonic/php-dot-array?style=flat-square" alt="Packagist Version"></a>
-  <img src="https://img.shields.io/packagist/dt/pharaonic/php-dot-array?style=flat-square" alt="Packagist Downloads">
+  <a href="https://github.com/Pharaonic/php-slugify" target="_blank"><img src="https://img.shields.io/badge/source-pharaonic/php--slugify-blue.svg?style=flat-square" alt="Source"></a>
+  <a href="https://packagist.org/packages/pharaonic/php-slugify" target="_blank"><img src="https://img.shields.io/packagist/v/pharaonic/php-slugify?style=flat-square" alt="Packagist Version"></a>
+  <img src="https://img.shields.io/packagist/dt/pharaonic/php-slugify?style=flat-square" alt="Packagist Downloads">
 </p>
 
 ## Documentation
