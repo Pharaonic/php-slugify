@@ -1,7 +1,5 @@
 <p align="center"><a href="https://pharaonic.io" target="_blank"><img src="https://raw.githubusercontent.com/Pharaonic/logos/main/php/slugify.jpg" width="470"></a></p>
 
-<h3 align="center">Simplest Slugify for PHP to convert string into a slug.</h3>
-
 <p align="center">
   <a href="https://github.com/Pharaonic/php-slugify/actions/workflows/build.yml" target="_blank"><img src="https://github.com/Pharaonic/php-slugify/actions/workflows/build.yml/badge.svg?branch=main" alt="source"></a>
   <a href="https://php.net" target="_blank"><img src="https://img.shields.io/static/v1?label=PHP&message=%3E=7.2&color=blue&style=flat-square" alt="PHP Version : >= 7.2"></a>
@@ -12,6 +10,9 @@
   <a href="https://packagist.org/packages/pharaonic/php-slugify" target="_blank"><img src="https://poser.pugx.org/pharaonic/php-slugify/v" alt="Packagist Version"></a>
   <a href="https://packagist.org/packages/pharaonic/php-slugify" target="_blank"><img src="https://poser.pugx.org/pharaonic/php-slugify/downloads" alt="Packagist Downloads"></a>
 </p>
+
+<h5 align="center">Simplest Slugify for PHP to convert string into a slug.</h5>
+<br>
 
 ## Documentation
 
