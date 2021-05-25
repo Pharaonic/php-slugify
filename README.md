@@ -11,7 +11,7 @@
   <a href="https://packagist.org/packages/pharaonic/php-slugify" target="_blank"><img src="https://poser.pugx.org/pharaonic/php-slugify/downloads" alt="Packagist Downloads"></a>
 </p>
 
-<h5 align="center">Simplest Slugify for PHP to convert string into a slug.</h5>
+<h3 align="center">Simplest Slugify for PHP to convert string into a slug.</h3>
 <br>
 
 ## Documentation
