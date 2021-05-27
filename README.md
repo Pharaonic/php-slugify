@@ -1,4 +1,4 @@
-<p align="center"><a href="https://pharaonic.io" target="_blank"><img src="https://raw.githubusercontent.com/Pharaonic/logos/main/php/slugify.jpg" width="470"></a></p>
+<p align="center"><a href="https://pharaonic.io" target="_blank"><img src="https://raw.githubusercontent.com/Pharaonic/logos/main/php/slugify.jpg"></a></p>
 
 <p align="center">
   <a href="https://github.com/Pharaonic/php-slugify/actions/workflows/build.yml" target="_blank"><img src="https://github.com/Pharaonic/php-slugify/actions/workflows/build.yml/badge.svg?branch=main" alt="source"></a>
