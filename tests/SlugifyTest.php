@@ -3,7 +3,6 @@
 namespace Pharaonic\Slugify\Tests;
 
 use Pharaonic\Slugify\Slugify;
-use Pharaonic\Slugify\Slugify\slug;
 use PHPUnit\Framework\TestCase;
 
 class SlugifyTest extends TestCase

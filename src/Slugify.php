@@ -6,8 +6,7 @@ namespace Pharaonic\Slugify;
  * Slugify Class
  * Generate Slug and manipulate the rules
  * 
- * @package pharaonic/laravel-slugify
- * @author Moamen Eltouny <raggi@pharaonic.io>
+ * @author Moamen Eltouny
  */
 class Slugify
 {
