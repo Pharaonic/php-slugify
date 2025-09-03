@@ -11,12 +11,13 @@
     "authors": [
         {
             "name": "Moamen Eltouny",
-            "email": "raggi@pharaonic.io"
+            "email": "raggigroup@gmail.com"
         }
     ],
     "require": {
         "php": "^8.0",
-        "ext-mbstring": "*"
+        "ext-mbstring": "*",
+        "voku/portable-ascii": "^2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.0"
@@ -29,7 +30,7 @@
             "Pharaonic\\Slugify\\": "src"
         },
         "files": [
-            "src/Helpers.php"
+            "src/helpers.php"
         ]
     },
     "autoload-dev": {
