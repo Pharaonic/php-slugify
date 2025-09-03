@@ -61,8 +61,6 @@ class SlugifyService
         } else {
             $value = str_replace(array_keys($this->dictionary), $this->dictionary, $value);
         }
-
-
         return $this->prepareValue($value, $separator);
     }
 
