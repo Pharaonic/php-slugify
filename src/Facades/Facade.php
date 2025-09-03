@@ -9,7 +9,7 @@ abstract class Facade
     /**
      * Get the facade accessor for the underlying instance.
      *
-     * @return void
+     * @return string
      * @throws \RuntimeException
      */
     protected static function getFacadeAccessor()
