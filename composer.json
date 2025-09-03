@@ -11,7 +11,7 @@
     "authors": [
         {
             "name": "Moamen Eltouny",
-            "email": "raggi@pharaonic.io"
+            "email": "raggigroup@gmail.com"
         }
     ],
     "require": {
@@ -29,7 +29,7 @@
             "Pharaonic\\Slugify\\": "src"
         },
         "files": [
-            "src/Helpers.php"
+            "src/helpers.php"
         ]
     },
     "autoload-dev": {
