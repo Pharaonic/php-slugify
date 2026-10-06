@@ -23,7 +23,7 @@ final class LocaleAwareTransliteratorTest extends TestCase
 
     public function testNullUsesTheDefaultGenericTransliterator(): void
     {
-        $this->assertSame('Aepfel', (new LocaleAwareTransliterator(null))->transliterate('Äpfel', 'de'));
+        $this->assertSame('Aepfel', new LocaleAwareTransliterator(null)->transliterate('Äpfel', 'de'));
     }
 
     public function testOverridesRunBeforeTheGenericTransliterator(): void
@@ -57,12 +57,12 @@ final class LocaleAwareTransliteratorTest extends TestCase
      */
     public function testUkrainian(string $input, string $expected): void
     {
-        $this->assertSame($expected, (new LocaleAwareTransliterator())->transliterate($input, 'uk'));
+        $this->assertSame($expected, new LocaleAwareTransliterator()->transliterate($input, 'uk'));
     }
 
     public function testLocalesWithoutOverridesAreGeneric(): void
     {
-        $this->assertSame('Aepfel', (new LocaleAwareTransliterator())->transliterate('Äpfel', 'de'));
-        $this->assertSame('Kiyiv', (new LocaleAwareTransliterator())->transliterate('Київ'));
+        $this->assertSame('Aepfel', new LocaleAwareTransliterator()->transliterate('Äpfel', 'de'));
+        $this->assertSame('Kiyiv', new LocaleAwareTransliterator()->transliterate('Київ'));
     }
 }

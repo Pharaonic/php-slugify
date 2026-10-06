@@ -37,6 +37,6 @@ final class PortableAsciiTransliteratorTest extends TestCase
      */
     public function testTransliterate(string $input, ?string $language, string $expected): void
     {
-        $this->assertSame($expected, (new PortableAsciiTransliterator())->transliterate($input, $language));
+        $this->assertSame($expected, new PortableAsciiTransliterator()->transliterate($input, $language));
     }
 }

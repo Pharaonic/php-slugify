@@ -65,14 +65,14 @@ final class RuleSetTest extends TestCase
 
     public function testMergeAcceptsRuleSets(): void
     {
-        $merged = (new RuleSet(['a' => '1']))->merge(new RuleSet(['a' => '2', 'b' => '3']));
+        $merged = new RuleSet(['a' => '1'])->merge(new RuleSet(['a' => '2', 'b' => '3']));
 
         $this->assertSame(['a' => '2', 'b' => '3'], $merged->all());
     }
 
     public function testOverriddenRuleMovesToTheEnd(): void
     {
-        $rules = (new RuleSet(['a' => '1', 'b' => '2']))->with('a', '3');
+        $rules = new RuleSet(['a' => '1', 'b' => '2'])->with('a', '3');
 
         $this->assertSame(['b' => '2', 'a' => '3'], $rules->all());
     }

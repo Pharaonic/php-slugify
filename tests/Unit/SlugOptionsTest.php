@@ -49,7 +49,7 @@ final class SlugOptionsTest extends TestCase
      */
     public function testValidSeparators(string $separator): void
     {
-        (new SlugOptions($separator))->validate();
+        new SlugOptions($separator)->validate();
 
         $this->addToAssertionCount(1);
     }
@@ -76,7 +76,7 @@ final class SlugOptionsTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        (new SlugOptions($separator))->validate();
+        new SlugOptions($separator)->validate();
     }
 
     public function testInvalidMaxLength(): void
@@ -84,6 +84,6 @@ final class SlugOptionsTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('[-1]');
 
-        (new SlugOptions(maxLength: -1))->validate();
+        new SlugOptions(maxLength: -1)->validate();
     }
 }
