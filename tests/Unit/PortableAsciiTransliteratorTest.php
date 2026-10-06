@@ -25,6 +25,10 @@ final class PortableAsciiTransliteratorTest extends TestCase
             'cyrillic' => ['Привет', null, 'Privet'],
             'chinese fallback' => ['你好', null, 'Ni Hao '],
             'ascii untouched' => ['Hello @ 1', null, 'Hello @ 1'],
+            'region falls back to the language' => ['Äpfel', 'de-DE', 'Aepfel'],
+            'known regional variant' => ['Straße', 'de-AT', 'Strasze'],
+            'script subtag falls back to the language' => ['Đorđe', 'sr-Latn', 'Djordje'],
+            'unknown language is generic' => ['Äpfel', 'xx-YY', 'Apfel'],
         ];
     }
 
