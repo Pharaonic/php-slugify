@@ -35,8 +35,8 @@ git remote add upstream https://github.com/Pharaonic/php-slugify.git
 Check out the branch that matches the PHP version you are targeting:
 
 ```bash
-git checkout 8.0.x
-git pull upstream 8.0.x
+git checkout 8.1.x
+git pull upstream 8.1.x
 ```
 
 ## Create a working branch
