@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## 8.3.0 - 2026-10-06
 
-The `8.3.x` line targets PHP 8.3. Slug output is identical to `8.2.0`. See [UPGRADE.md](UPGRADE.md#from-82-to-83).
+The `8.3.x` line targets PHP 8.3. Slug output is identical to `8.2.0`. See [UPGRADE.md](UPGRADE.md#between-8x-release-lines).
 
 ### Changed
 
@@ -15,7 +15,7 @@ The `8.3.x` line targets PHP 8.3. Slug output is identical to `8.2.0`. See [UPGR
 
 ## 8.2.0 - 2026-10-06
 
-The `8.2.x` line targets PHP 8.2. Slug output is identical to `8.1.0`. See [UPGRADE.md](UPGRADE.md#from-81-to-82).
+The `8.2.x` line targets PHP 8.2. Slug output is identical to `8.1.0`. See [UPGRADE.md](UPGRADE.md#between-8x-release-lines).
 
 ### Changed
 
@@ -25,7 +25,7 @@ The `8.2.x` line targets PHP 8.2. Slug output is identical to `8.1.0`. See [UPGR
 
 ## 8.1.0 - 2026-10-06
 
-The `8.1.x` line targets PHP 8.1. Slug output is identical to `8.0.1`. See [UPGRADE.md](UPGRADE.md#from-80-to-81).
+The `8.1.x` line targets PHP 8.1. Slug output is identical to `8.0.1`. See [UPGRADE.md](UPGRADE.md#between-8x-release-lines).
 
 ### Changed
 

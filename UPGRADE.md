@@ -1,34 +1,18 @@
 # Upgrade Guide
 
-## From 8.2 to 8.3
+## Between 8.x release lines
 
-Version 8.3 targets PHP 8.3. The public API and slug output are unchanged.
+Each `8.N.x` line targets exactly one PHP version: `8.0.x` runs on PHP 8.0, `8.1.x` on PHP 8.1, and so on. Moving from one 8.x line to another never changes the public API or slug output, so no code changes are needed.
 
-### Requirements
+To upgrade, install the line that matches your PHP version. Composer picks it for you: `composer require pharaonic/php-slugify` resolves the latest line your PHP version supports.
 
-- PHP `>=8.3 <8.4`. Stay on `8.2.x` while you run PHP 8.2.
-
-No code changes are needed.
-
-## From 8.1 to 8.2
-
-Version 8.2 targets PHP 8.2. The public API and slug output are unchanged.
-
-### Requirements
-
-- PHP `>=8.2 <8.3`. Stay on `8.1.x` while you run PHP 8.1.
-
-No code changes are needed.
-
-## From 8.0 to 8.1
-
-Version 8.1 targets PHP 8.1. The public API and slug output are unchanged.
-
-### Requirements
-
-- PHP `>=8.1 <8.2`. Stay on `8.0.x` while you run PHP 8.0.
-
-No code changes are needed.
+| Line    | PHP |
+|---------|-----|
+| `8.4.x` | 8.4 |
+| `8.3.x` | 8.3 |
+| `8.2.x` | 8.2 |
+| `8.1.x` | 8.1 |
+| `8.0.x` | 8.0 |
 
 ## From 2.x to 8.0
 
