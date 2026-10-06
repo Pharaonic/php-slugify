@@ -11,4 +11,5 @@ use Pharaonic\Slugify\Slugify as BaseSlugify;
  */
 final class Slugify extends BaseSlugify
 {
+    // 
 }
