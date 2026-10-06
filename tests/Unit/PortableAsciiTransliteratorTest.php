@@ -4,6 +4,7 @@ namespace Pharaonic\Slugify\Tests\Unit;
 
 use Pharaonic\Slugify\Contracts\Transliterator;
 use Pharaonic\Slugify\Transliteration\PortableAsciiTransliterator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class PortableAsciiTransliteratorTest extends TestCase
@@ -16,7 +17,7 @@ final class PortableAsciiTransliteratorTest extends TestCase
     /**
      * @return array<string, array{string, string|null, string}>
      */
-    public function transliterationProvider(): array
+    public static function transliterationProvider(): array
     {
         return [
             'latin' => ['Crème brûlée', null, 'Creme brulee'],
@@ -32,9 +33,7 @@ final class PortableAsciiTransliteratorTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider transliterationProvider
-     */
+    #[DataProvider('transliterationProvider')]
     public function testTransliterate(string $input, ?string $language, string $expected): void
     {
         $this->assertSame($expected, new PortableAsciiTransliterator()->transliterate($input, $language));

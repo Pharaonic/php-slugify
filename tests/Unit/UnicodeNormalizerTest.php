@@ -3,6 +3,7 @@
 namespace Pharaonic\Slugify\Tests\Unit;
 
 use Pharaonic\Slugify\Normalization\UnicodeNormalizer;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class UnicodeNormalizerTest extends TestCase
@@ -65,7 +66,7 @@ final class UnicodeNormalizerTest extends TestCase
     /**
      * @return array<string, array{string, string}>
      */
-    public function boundaryProvider(): array
+    public static function boundaryProvider(): array
     {
         return [
             'null byte' => ["a\0b", 'a b'],
@@ -76,9 +77,7 @@ final class UnicodeNormalizerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider boundaryProvider
-     */
+    #[DataProvider('boundaryProvider')]
     public function testBoundaries(string $input, string $expected): void
     {
         $this->assertSame($expected, UnicodeNormalizer::normalize($input));
@@ -87,7 +86,7 @@ final class UnicodeNormalizerTest extends TestCase
     /**
      * @return array<string, array{string, string}>
      */
-    public function compatibilityProvider(): array
+    public static function compatibilityProvider(): array
     {
         return [
             'latin ligature' => ['ﬁnance', 'finance'],
@@ -101,9 +100,7 @@ final class UnicodeNormalizerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider compatibilityProvider
-     */
+    #[DataProvider('compatibilityProvider')]
     public function testCompatibilityForms(string $input, string $expected): void
     {
         $this->assertSame($expected, UnicodeNormalizer::normalize($input));

@@ -3,6 +3,7 @@
 namespace Pharaonic\Slugify\Tests\Unit;
 
 use Pharaonic\Slugify\Support\Locale;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class LocaleTest extends TestCase
@@ -10,7 +11,7 @@ final class LocaleTest extends TestCase
     /**
      * @return array<string, array{string|null, string|null}>
      */
-    public function languageProvider(): array
+    public static function languageProvider(): array
     {
         return [
             'language' => ['de', 'de'],
@@ -29,9 +30,7 @@ final class LocaleTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider languageProvider
-     */
+    #[DataProvider('languageProvider')]
     public function testLanguage(?string $locale, ?string $expected): void
     {
         $this->assertSame($expected, Locale::language($locale));

@@ -4,13 +4,14 @@ namespace Pharaonic\Slugify\Tests\Feature;
 
 use Pharaonic\Slugify\Slugify;
 use Pharaonic\Slugify\Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class NumbersTest extends TestCase
 {
     /**
      * @return array<string, array{string, string}>
      */
-    public function numberProvider(): array
+    public static function numberProvider(): array
     {
         return [
             'arabic-indic' => ['١٢٣', '123'],
@@ -40,9 +41,7 @@ final class NumbersTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider numberProvider
-     */
+    #[DataProvider('numberProvider')]
     public function testUnicodeMode(string $input, string $expected): void
     {
         $this->assertSame($expected, Slugify::make($input));

@@ -5,6 +5,7 @@ namespace Pharaonic\Slugify\Tests\Unit;
 use Pharaonic\Slugify\Contracts\Transliterator;
 use Pharaonic\Slugify\Tests\Fixtures\UppercaseTransliterator;
 use Pharaonic\Slugify\Transliteration\LocaleAwareTransliterator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class LocaleAwareTransliteratorTest extends TestCase
@@ -36,7 +37,7 @@ final class LocaleAwareTransliteratorTest extends TestCase
     /**
      * @return array<string, array{string, string}>
      */
-    public function ukrainianProvider(): array
+    public static function ukrainianProvider(): array
     {
         return [
             'word-initial forms' => [
@@ -52,9 +53,7 @@ final class LocaleAwareTransliteratorTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider ukrainianProvider
-     */
+    #[DataProvider('ukrainianProvider')]
     public function testUkrainian(string $input, string $expected): void
     {
         $this->assertSame($expected, new LocaleAwareTransliterator()->transliterate($input, 'uk'));

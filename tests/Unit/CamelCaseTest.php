@@ -3,6 +3,7 @@
 namespace Pharaonic\Slugify\Tests\Unit;
 
 use Pharaonic\Slugify\Support\CamelCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class CamelCaseTest extends TestCase
@@ -10,7 +11,7 @@ final class CamelCaseTest extends TestCase
     /**
      * @return array<string, array{string, string}>
      */
-    public function splitProvider(): array
+    public static function splitProvider(): array
     {
         return [
             'lowercase' => ['hello', 'hello'],
@@ -29,9 +30,7 @@ final class CamelCaseTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider splitProvider
-     */
+    #[DataProvider('splitProvider')]
     public function testSplit(string $input, string $expected): void
     {
         $this->assertSame($expected, CamelCase::split($input));

@@ -4,6 +4,7 @@ namespace Pharaonic\Slugify\Tests\Feature;
 
 use Pharaonic\Slugify\Slugify;
 use Pharaonic\Slugify\Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class LocaleTest extends TestCase
 {
@@ -74,7 +75,7 @@ final class LocaleTest extends TestCase
     /**
      * @return array<string, array{string}>
      */
-    public function unknownLocaleProvider(): array
+    public static function unknownLocaleProvider(): array
     {
         return [
             'unknown language' => ['xx'],
@@ -85,9 +86,7 @@ final class LocaleTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider unknownLocaleProvider
-     */
+    #[DataProvider('unknownLocaleProvider')]
     public function testUnknownOrMalformedLocalesFallBackToGenericBehavior(string $locale): void
     {
         $this->assertSame('crème-işik', Slugify::of('Crème IŞIK')->locale($locale)->toString());

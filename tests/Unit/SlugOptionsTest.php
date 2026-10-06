@@ -4,6 +4,7 @@ namespace Pharaonic\Slugify\Tests\Unit;
 
 use Pharaonic\Slugify\Exceptions\InvalidArgumentException;
 use Pharaonic\Slugify\SlugOptions;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class SlugOptionsTest extends TestCase
@@ -32,7 +33,7 @@ final class SlugOptionsTest extends TestCase
     /**
      * @return array<string, array{string}>
      */
-    public function validSeparatorProvider(): array
+    public static function validSeparatorProvider(): array
     {
         return [
             'dash' => ['-'],
@@ -44,9 +45,7 @@ final class SlugOptionsTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider validSeparatorProvider
-     */
+    #[DataProvider('validSeparatorProvider')]
     public function testValidSeparators(string $separator): void
     {
         new SlugOptions($separator)->validate();
@@ -57,7 +56,7 @@ final class SlugOptionsTest extends TestCase
     /**
      * @return array<string, array{string}>
      */
-    public function invalidSeparatorProvider(): array
+    public static function invalidSeparatorProvider(): array
     {
         return [
             'letter' => ['a'],
@@ -69,9 +68,7 @@ final class SlugOptionsTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider invalidSeparatorProvider
-     */
+    #[DataProvider('invalidSeparatorProvider')]
     public function testInvalidSeparators(string $separator): void
     {
         $this->expectException(InvalidArgumentException::class);

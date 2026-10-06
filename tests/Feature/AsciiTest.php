@@ -4,13 +4,14 @@ namespace Pharaonic\Slugify\Tests\Feature;
 
 use Pharaonic\Slugify\Slugify;
 use Pharaonic\Slugify\Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class AsciiTest extends TestCase
 {
     /**
      * @return array<string, array{string, string|null, string}>
      */
-    public function asciiProvider(): array
+    public static function asciiProvider(): array
     {
         return [
             'french' => ['Crème brûlée', null, 'creme-brulee'],
@@ -35,9 +36,7 @@ final class AsciiTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider asciiProvider
-     */
+    #[DataProvider('asciiProvider')]
     public function testAsciiTransliteration(string $input, ?string $language, string $expected): void
     {
         $this->assertSame($expected, Slugify::make($input, '-', true, $language));
