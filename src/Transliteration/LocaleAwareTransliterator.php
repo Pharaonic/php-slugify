@@ -19,7 +19,7 @@ final class LocaleAwareTransliterator implements Transliterator
      */
     private static array $patterns = [];
 
-    private Transliterator $generic;
+    private readonly Transliterator $generic;
 
     public function __construct(?Transliterator $generic = null)
     {
@@ -56,9 +56,7 @@ final class LocaleAwareTransliterator implements Transliterator
                 return self::matchCase($replacement, $source, $inUpperCaseWord);
             },
             $value,
-            -1,
-            $count,
-            PREG_UNMATCHED_AS_NULL
+            flags: PREG_UNMATCHED_AS_NULL
         );
     }
 
@@ -69,14 +67,10 @@ final class LocaleAwareTransliterator implements Transliterator
     private static function compile(array $map, array $initial): string
     {
         $alternatives = static function (array $searches): string {
-            $searches = array_map('strval', array_keys($searches));
-            usort($searches, static function (string $a, string $b): int {
-                return strlen($b) <=> strlen($a);
-            });
+            $searches = array_map(strval(...), array_keys($searches));
+            usort($searches, static fn (string $a, string $b): int => strlen($b) <=> strlen($a));
 
-            return implode('|', array_map(static function (string $search): string {
-                return preg_quote($search, '/');
-            }, $searches));
+            return implode('|', array_map(static fn (string $search): string => preg_quote($search, '/'), $searches));
         };
 
         // A word starts after anything but a letter, a mark or an apostrophe.

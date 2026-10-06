@@ -20,7 +20,7 @@ use Stringable;
  * Every configuration method returns a new instance, so a configured
  * builder can be safely reused and never touches global state.
  *
- * A slug is produced by a fixed, deterministic pipeline (STAGES), which
+ * A slug is produced by a fixed, deterministic pipeline (Stage), which
  * explain() exposes step by step:
  *
  *   unicode_normalized    invalid UTF-8 / controls => boundaries, NFC, compatibility forms
@@ -37,27 +37,6 @@ use Stringable;
  */
 final class Slugger implements Stringable
 {
-    /**
-     * The pipeline, in order (see the class documentation).
-     *
-     * Emoji run before symbols: "©️" is an emoji, "©" is a symbol. Lowercasing runs
-     * before transliteration so the result does not depend on the input's case
-     * (the generic transliterator maps "Χ" to "X" but "χ" to "kh").
-     */
-    private const STAGES = [
-        'unicode_normalized',
-        'camel_case_split',
-        'custom_replacements',
-        'numbers_normalized',
-        'emoji_processed',
-        'symbols_processed',
-        'lowercased',
-        'transliterated',
-        'ascii_replacements',
-        'filtered',
-        'final',
-    ];
-
     private static ?RuleSet $noRules = null;
 
     private SlugOptions $options;
@@ -67,7 +46,7 @@ final class Slugger implements Stringable
     private Transliterator $transliterator;
 
     public function __construct(
-        private string $value,
+        private readonly string $value,
         ?SlugOptions $options = null,
         ?RuleSet $rules = null,
         ?Transliterator $transliterator = null
@@ -221,7 +200,7 @@ final class Slugger implements Stringable
 
         $value = $this->value;
 
-        foreach (self::STAGES as $stage) {
+        foreach (Stage::cases() as $stage) {
             $value = $this->stage($stage, $value);
         }
 
@@ -242,8 +221,8 @@ final class Slugger implements Stringable
         $value = $this->value;
         $steps = ['original' => $value];
 
-        foreach (self::STAGES as $stage) {
-            $steps[$stage] = $value = $this->stage($stage, $value);
+        foreach (Stage::cases() as $stage) {
+            $steps[$stage->value] = $value = $this->stage($stage, $value);
         }
 
         return $steps;
@@ -261,27 +240,25 @@ final class Slugger implements Stringable
 
     /**
      * Run one pipeline stage. Every stage is a pure string => string step.
-     *
-     * @param value-of<self::STAGES> $stage
      */
-    private function stage(string $stage, string $value): string
+    private function stage(Stage $stage, string $value): string
     {
         $options = $this->options;
 
         return match ($stage) {
-            'unicode_normalized' => UnicodeNormalizer::normalize($value),
-            'camel_case_split' => $options->splitCamelCase ? CamelCase::split($value) : $value,
-            'custom_replacements' => $this->ruleStages()[0]->apply($value, $options->lowercase),
-            'numbers_normalized' => $options->normalizeNumbers ? NumberNormalizer::normalize($value) : $value,
-            'emoji_processed' => $options->emoji->apply($value),
-            'symbols_processed' => $options->symbols->apply($value, $options->language),
-            'lowercased' => $this->toLowerCase($value),
-            'transliterated' => $options->ascii
+            Stage::UnicodeNormalized => UnicodeNormalizer::normalize($value),
+            Stage::CamelCaseSplit => $options->splitCamelCase ? CamelCase::split($value) : $value,
+            Stage::CustomReplacements => $this->ruleStages()[0]->apply($value, $options->lowercase),
+            Stage::NumbersNormalized => $options->normalizeNumbers ? NumberNormalizer::normalize($value) : $value,
+            Stage::EmojiProcessed => $options->emoji->apply($value),
+            Stage::SymbolsProcessed => $options->symbols->apply($value, $options->language),
+            Stage::Lowercased => $this->toLowerCase($value),
+            Stage::Transliterated => $options->ascii
                 ? $this->toLowerCase($this->transliterator->transliterate($value, $options->language))
                 : $value,
-            'ascii_replacements' => $this->ruleStages()[1]->apply($value, $options->lowercase),
-            'filtered' => implode(' ', SeparatorNormalizer::words($value, $options->ascii)),
-            'final' => SeparatorNormalizer::join(
+            Stage::AsciiReplacements => $this->ruleStages()[1]->apply($value, $options->lowercase),
+            Stage::Filtered => implode(' ', SeparatorNormalizer::words($value, $options->ascii)),
+            Stage::Final => SeparatorNormalizer::join(
                 $value === '' ? [] : explode(' ', $value),
                 $options->separator,
                 $options->maxLength

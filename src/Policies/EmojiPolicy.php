@@ -46,7 +46,7 @@ final class EmojiPolicy
     /**
      * @param array<string, string> $map
      */
-    private function __construct(private array $map = [])
+    private function __construct(private readonly array $map = [])
     {
     }
 
@@ -85,12 +85,12 @@ final class EmojiPolicy
 
         $map = $this->map;
 
-        return (string) preg_replace_callback(self::EMOJI, static function (array $match) use ($map): string {
-            if ($map === []) {
-                return ' ';
-            }
-
-            return $map[$match[0]] ?? $map[(string) preg_replace(self::VARIANTS, '', $match[0])] ?? ' ';
-        }, $value);
+        return (string) preg_replace_callback(
+            self::EMOJI,
+            static fn (array $match): string => $map === []
+                ? ' '
+                : $map[$match[0]] ?? $map[(string) preg_replace(self::VARIANTS, '', $match[0])] ?? ' ',
+            $value
+        );
     }
 }

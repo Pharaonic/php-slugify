@@ -62,11 +62,9 @@ class Slugify
      * Legacy entry point, kept for backward compatibility. Prefer make().
      *
      * Accepts any scalar or Stringable value; null yields an empty slug.
-     *
-     * @param mixed $value
      */
     public static function get(
-        $value,
+        mixed $value,
         string $separator = '-',
         bool $ascii_only = false,
         ?string $ascii_lang = 'en'
@@ -135,10 +133,7 @@ class Slugify
         self::$transliterator = $transliterator;
     }
 
-    /**
-     * @param mixed $value
-     */
-    private static function stringify($value): string
+    private static function stringify(mixed $value): string
     {
         if ($value === null) {
             return '';

@@ -33,7 +33,7 @@ final class PortableAsciiTransliterator implements Transliterator
             return ASCII::ENGLISH_LANGUAGE_CODE;
         }
 
-        self::$known ??= array_fill_keys(array_filter(ASCII::getAllLanguages(), 'is_string'), true);
+        self::$known ??= array_fill_keys(array_filter(ASCII::getAllLanguages(), is_string(...)), true);
 
         $code = str_replace('-', '_', strtolower($language));
 

@@ -28,7 +28,7 @@ jobs:
       version: ${{ steps.php.outputs.version }}
 
     steps:
-      # Each "8.N.x" branch targets exactly PHP 8.N; any other branch uses the 8.0 baseline.
+      # Each "8.N.x" branch targets exactly PHP 8.N; any other branch uses the 8.1 baseline.
       - name: Resolve PHP version from branch
         id: php
         shell: bash
@@ -38,7 +38,7 @@ jobs:
           if [[ "${BRANCH}" =~ ^8\.[0-9]+\.x$ ]]; then
             PHP_VERSION="${BRANCH%.x}"
           else
-            PHP_VERSION="8.0"
+            PHP_VERSION="8.1"
           fi
 
           echo "branch=${BRANCH} php=${PHP_VERSION}"

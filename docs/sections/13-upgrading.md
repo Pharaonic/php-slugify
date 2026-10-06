@@ -1,3 +1,7 @@
+## Upgrading from 8.0
+
+{release.label} targets PHP 8.1. The public API and slug output are the same as in 8.0, so no code changes are needed: require PHP `>=8.1 <8.2`, or stay on `8.0.x` while you run PHP 8.0.
+
 ## Upgrading from 2.x
 
 The 2.x API keeps working, but some slugs come out differently. Slugs you've already stored are not affected; only newly generated slugs can change.

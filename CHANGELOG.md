@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## 8.1.0 - Unreleased
+
+The `8.1.x` line targets PHP 8.1. Slug output is identical to `8.0.1`. See [UPGRADE.md](UPGRADE.md#from-80-to-81).
+
+### Changed
+
+- **Requires PHP `>=8.1 <8.2`.** Use the `8.0.x` line on PHP 8.0.
+- `SymbolPolicy` and `EmojiPolicy` are immutable: their state is held in `readonly` properties, and the symbol mode is an internal enum.
+- `LocaleAwareTransliterator` holds its generic transliterator in a `readonly` property.
+- `Slugify::get()`, `slug()` and `InvalidArgumentException::unsupportedValue()` declare their `mixed` parameter natively, and `RuleSet::merge()` declares `self|array`.
+- The pipeline stages are an internal `Stage` enum, so static analysis checks that every stage is handled. `explain()` returns the same keys.
+- Internals use first-class callable syntax, arrow functions and named arguments.
+- PHPUnit turns deprecations into failures, so a PHP deprecation can't slip through unnoticed.
+- PHPStan analyses against PHP 8.1, and CI falls back to PHP 8.1 on branches that are not an `8.N.x` line.
+
 ## 8.0.1 - 2026-10-06
 
 The slug engine is now an explicit, documented pipeline: Unicode normalization, custom replacements, numbers, emoji, symbols, locale-aware lowercasing, transliteration, filtering and joining. Each concern is configured separately, and `explain()` exposes every step.

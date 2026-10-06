@@ -69,7 +69,7 @@ final class RuleSet implements Countable
      *
      * @param self|array<array-key, string> $rules
      */
-    public function merge($rules): self
+    public function merge(self|array $rules): self
     {
         $clone = clone $this;
 
@@ -227,14 +227,10 @@ final class RuleSet implements Countable
             $map[$caseInsensitive ? mb_convert_case($search, MB_CASE_FOLD, 'UTF-8') : $search] = $replace;
         }
 
-        $searches = array_map('strval', array_keys($this->rules));
-        usort($searches, static function (string $a, string $b): int {
-            return strlen($b) <=> strlen($a);
-        });
+        $searches = array_map(strval(...), array_keys($this->rules));
+        usort($searches, static fn (string $a, string $b): int => strlen($b) <=> strlen($a));
 
-        $alternatives = array_map(static function (string $search): string {
-            return preg_quote($search, '/');
-        }, $searches);
+        $alternatives = array_map(static fn (string $search): string => preg_quote($search, '/'), $searches);
 
         return $this->compiled[$mode] = [
             'pattern' => '/' . implode('|', $alternatives) . '/u' . ($caseInsensitive ? 'i' : ''),

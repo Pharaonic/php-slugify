@@ -21,6 +21,11 @@ final class LocaleAwareTransliteratorTest extends TestCase
         $this->assertSame('ABC de', $transliterator->transliterate('abc', 'de'));
     }
 
+    public function testNullUsesTheDefaultGenericTransliterator(): void
+    {
+        $this->assertSame('Aepfel', (new LocaleAwareTransliterator(null))->transliterate('Äpfel', 'de'));
+    }
+
     public function testOverridesRunBeforeTheGenericTransliterator(): void
     {
         $transliterator = new LocaleAwareTransliterator(new UppercaseTransliterator());

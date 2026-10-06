@@ -13,7 +13,7 @@
   - [Extending](#extending)
 - API Reference
   - [Methods & Options](#api-reference)
-  - [Upgrading from 2.x](#upgrading)
+  - [Upgrading](#upgrading)
 - Examples
   - [Use Cases](#examples)
   - [Troubleshooting](#troubleshooting)

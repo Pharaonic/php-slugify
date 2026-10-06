@@ -67,9 +67,7 @@ final class UnicodeNormalizer
 
         $value = (string) preg_replace_callback(
             self::COMPATIBILITY_FORMS,
-            static function (array $match): string {
-                return (string) Normalizer::normalize($match[0], Normalizer::FORM_KC);
-            },
+            static fn (array $match): string => (string) Normalizer::normalize($match[0], Normalizer::FORM_KC),
             $value
         );
 
@@ -80,9 +78,7 @@ final class UnicodeNormalizer
     {
         return (string) preg_replace_callback(
             self::VALID_UTF8,
-            static function (array $match): string {
-                return ($match[1] ?? '') !== '' ? $match[1] : ' ';
-            },
+            static fn (array $match): string => ($match[1] ?? '') !== '' ? $match[1] : ' ',
             $value
         );
     }
