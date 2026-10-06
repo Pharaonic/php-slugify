@@ -1,5 +1,15 @@
 # Upgrade Guide
 
+## From 8.1 to 8.2
+
+Version 8.2 targets PHP 8.2. The public API and slug output are unchanged.
+
+### Requirements
+
+- PHP `>=8.2 <8.3`. Stay on `8.1.x` while you run PHP 8.1.
+
+No code changes are needed.
+
 ## From 8.0 to 8.1
 
 Version 8.1 targets PHP 8.1. The public API and slug output are unchanged.

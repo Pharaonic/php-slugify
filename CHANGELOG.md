@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## 8.2.0 - Unreleased
+
+The `8.2.x` line targets PHP 8.2. Slug output is identical to `8.1.0`. See [UPGRADE.md](UPGRADE.md#from-81-to-82).
+
+### Changed
+
+- **Requires PHP `>=8.2 <8.3`.** Use the `8.1.x` line on PHP 8.1.
+- `EmojiPolicy` is a `readonly` class.
+- PHPStan analyses against PHP 8.2, and CI falls back to PHP 8.2 on branches that are not an `8.N.x` line.
+
 ## 8.1.0 - 2026-10-06
 
 The `8.1.x` line targets PHP 8.1. Slug output is identical to `8.0.1`. See [UPGRADE.md](UPGRADE.md#from-80-to-81).

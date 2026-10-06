@@ -10,16 +10,13 @@ Fast, framework-agnostic slug generation for PHP. Turn any string into a URL-fri
 
 :::features
 ### Unicode First {icon="translate"}
-`مرحبا بالعالم` → `مرحبا-بالعالم`, `Привет мир` → `привет-мир`.
+Arabic, Cyrillic, Greek, CJK and other scripts stay as they are, so slugs read naturally in their own language.
 
 ### ASCII on Demand {icon="globe"}
-`Crème brûlée` → `creme-brulee`. Add a locale such as `de` or `uk` for language-specific results.
+Transliterate to Latin-only slugs when you need them, with optional locale rules for languages such as German or Ukrainian.
 
 ### Explicit Policies {icon="shield-check"}
-Symbols, emoji and Unicode numbers are handled on purpose, not by accident: `الإصدار ١٢` → `الإصدار-12`.
-
-### Replacement Rules {icon="pencil"}
-Package-wide or per slug, with no state leaking between calls.
+Symbols, emoji and Unicode numbers are handled on purpose, not by accident, with no invisible residue.
 :::
 
 :::info Quick Tip

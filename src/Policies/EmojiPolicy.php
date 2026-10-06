@@ -20,7 +20,7 @@ use Pharaonic\Slugify\Exceptions\InvalidArgumentException;
  *
  * The package ships no emoji names: semantic conversion is opt-in, with your words.
  */
-final class EmojiPolicy
+final readonly class EmojiPolicy
 {
     /**
      * Characters that may start or belong to an emoji sequence; text without any
@@ -46,7 +46,7 @@ final class EmojiPolicy
     /**
      * @param array<string, string> $map
      */
-    private function __construct(private readonly array $map = [])
+    private function __construct(private array $map = [])
     {
     }
 
