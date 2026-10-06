@@ -1,17 +1,18 @@
 <?php
 
-use Pharaonic\Slugify\Facades\Slugify;
+use Pharaonic\Slugify\Slugify;
 
-/**
- * Get Slug from String
- *
- * @param mixed $value
- * @param string $separator
- * @param bool $ascii_only
- * @param string $ascii_lang
- * @return string
- */
-function slug($value, string $separator = '-', bool $ascii_only = false, string $ascii_lang = 'en')
-{
-    return Slugify::get((string)$value, $separator, $ascii_only, $ascii_lang);
+if (!function_exists('slug')) {
+    /**
+     * Generate a slug from the given value.
+     *
+     * @param mixed       $value      Any scalar or Stringable value; null yields "".
+     * @param string      $separator  Joins the words; may be empty.
+     * @param bool        $ascii_only Transliterate the slug to ASCII.
+     * @param string|null $ascii_lang Language hint for ASCII transliteration.
+     */
+    function slug($value, string $separator = '-', bool $ascii_only = false, ?string $ascii_lang = 'en'): string
+    {
+        return Slugify::get($value, $separator, $ascii_only, $ascii_lang);
+    }
 }

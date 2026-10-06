@@ -2,16 +2,13 @@
 
 namespace Pharaonic\Slugify\Facades;
 
-use Pharaonic\Slugify\Services\SlugifyService;
+use Pharaonic\Slugify\Slugify as BaseSlugify;
 
 /**
- * @method static string get(string $value, string $separator = '-', bool $ascii_only = false, string $ascii_lang = 'en')
- * @method static void rule(string $key, string $value)
+ * Backward-compatible import path for code written against 2.x.
+ *
+ * @deprecated Use \Pharaonic\Slugify\Slugify instead.
  */
-class Slugify extends Facade
+final class Slugify extends BaseSlugify
 {
-    protected static function getFacadeAccessor()
-    {
-        return SlugifyService::class;
-    }
 }
