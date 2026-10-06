@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## 8.4.0 - Unreleased
+
+The `8.4.x` line targets PHP 8.4. Slug output is identical to `8.3.0`. See [UPGRADE.md](UPGRADE.md#between-8x-release-lines).
+
+### Changed
+
+- **Requires PHP `>=8.4 <8.5`.** Use the `8.3.x` line on PHP 8.3.
+- Requires `voku/portable-ascii` `^2.0.2`. Earlier 2.0 releases declare implicitly nullable parameters, which PHP 8.4 deprecates.
+- The test suite runs on PHPUnit 12: data providers are static and declared with `#[DataProvider]` attributes, and deprecations still fail the run (`failOnDeprecation`).
+- PHPStan `^2.0` is required for development, since 1.x cannot parse PHP 8.4 syntax.
+- The test suite calls methods on new instances without wrapping parentheses (`new RuleSet([...])->merge(...)`).
+- PHPStan analyses against PHP 8.4, and CI falls back to PHP 8.4 on branches that are not an `8.N.x` line.
+
 ## 8.3.0 - 2026-10-06
 
 The `8.3.x` line targets PHP 8.3. Slug output is identical to `8.2.0`. See [UPGRADE.md](UPGRADE.md#between-8x-release-lines).
