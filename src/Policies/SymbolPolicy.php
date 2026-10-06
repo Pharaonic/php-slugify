@@ -18,10 +18,6 @@ use voku\helper\ASCII;
  */
 final class SymbolPolicy
 {
-    private const REMOVE = 'remove';
-    private const WORDS = 'words';
-    private const CUSTOM = 'custom';
-
     /**
      * @var array<string, array<string, string>> locale => symbol words, built lazily
      */
@@ -30,13 +26,13 @@ final class SymbolPolicy
     /**
      * @param array<string, string> $map
      */
-    private function __construct(private string $mode, private array $map = [])
+    private function __construct(private readonly SymbolMode $mode, private readonly array $map = [])
     {
     }
 
     public static function remove(): self
     {
-        return new self(self::REMOVE);
+        return new self(SymbolMode::Remove);
     }
 
     /**
@@ -47,7 +43,7 @@ final class SymbolPolicy
      */
     public static function words(): self
     {
-        return new self(self::WORDS);
+        return new self(SymbolMode::Words);
     }
 
     /**
@@ -69,19 +65,16 @@ final class SymbolPolicy
             $words[$symbol] = ' ' . $word . ' ';
         }
 
-        return new self(self::CUSTOM, $words);
+        return new self(SymbolMode::Custom, $words);
     }
 
     public function apply(string $value, ?string $locale = null): string
     {
-        switch ($this->mode) {
-            case self::WORDS:
-                return strtr($value, self::wordsFor($locale));
-            case self::CUSTOM:
-                return $this->map === [] ? $value : strtr($value, $this->map);
-            default:
-                return $value;
-        }
+        return match ($this->mode) {
+            SymbolMode::Words => strtr($value, self::wordsFor($locale)),
+            SymbolMode::Custom => $this->map === [] ? $value : strtr($value, $this->map),
+            SymbolMode::Remove => $value,
+        };
     }
 
     /**
