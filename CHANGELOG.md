@@ -19,7 +19,7 @@ The `8.0.x` line is a full rebuild of the package for PHP 8.0. The package versi
 - Optional Unicode NFC normalization when `ext-intl` is installed.
 - `InvalidArgumentException` for invalid separators, max lengths, empty rules and unsupported values.
 - A PHPUnit 9.6 test suite (unit, feature and regression fixtures), PHPStan level 9, PHP_CodeSniffer (PSR-12), a benchmark script and Composer scripts (`test`, `analyse`, `lint`, `format`, `check`, `benchmark`).
-- Repository files: `CODE_OF_CONDUCT.md`, `CONTRIBUTING.md`, `SECURITY.md`, `SUPPORT.md`, `MIGRATION.md`, issue and pull request templates, Dependabot, `.editorconfig` and `.gitattributes`.
+- Repository files: `CODE_OF_CONDUCT.md`, `CONTRIBUTING.md`, `SECURITY.md`, `MIGRATION.md`, issue and pull request templates, Dependabot, `.editorconfig` and `.gitattributes`.
 
 ### Changed
 
