@@ -28,7 +28,7 @@
         "php": ">=8.4 <8.5",
         "ext-mbstring": "*",
         "symfony/polyfill-intl-normalizer": "^1.26",
-        "voku/portable-ascii": "^2.0"
+        "voku/portable-ascii": "^2.0.2"
     },
     "require-dev": {
         "phpstan/phpstan": "^2.0",
