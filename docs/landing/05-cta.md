@@ -9,4 +9,4 @@ buttons:
     icon: arrow-right
 ---
 
-Read the full documentation for installation, Unicode and ASCII slugs, separators, replacement rules, the fluent API, custom transliterators, and upgrading from 2.x.
+Read the full documentation for installation, Unicode and ASCII slugs, separators, replacement rules, the fluent API, and custom transliterators.
