@@ -17,6 +17,7 @@ final class PortableAsciiTransliterator implements Transliterator
      */
     private static ?array $known = null;
 
+    #[\Override]
     public function transliterate(string $value, ?string $language = null): string
     {
         return ASCII::to_ascii($value, self::language($language), true, false, true);

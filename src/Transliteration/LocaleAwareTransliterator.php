@@ -26,6 +26,7 @@ final class LocaleAwareTransliterator implements Transliterator
         $this->generic = $generic ?? new PortableAsciiTransliterator();
     }
 
+    #[\Override]
     public function transliterate(string $value, ?string $language = null): string
     {
         $map = Locale::overrides($language, 'ascii');

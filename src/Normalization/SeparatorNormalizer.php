@@ -18,7 +18,7 @@ final class SeparatorNormalizer
      * They are removed rather than treated as boundaries, so a soft hyphen or a
      * Persian ZWNJ inside a word does not split it.
      */
-    private const INVISIBLE = '/[\p{Cf}\p{Me}\x{FE00}-\x{FE0F}\x{E0100}-\x{E01EF}]+/u';
+    private const string INVISIBLE = '/[\p{Cf}\p{Me}\x{FE00}-\x{FE0F}\x{E0100}-\x{E01EF}]+/u';
 
     /**
      * Split the text into words, dropping everything that is not a letter, a

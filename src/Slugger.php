@@ -228,6 +228,7 @@ final class Slugger implements Stringable
         return $steps;
     }
 
+    #[\Override]
     public function __toString(): string
     {
         return $this->toString();

@@ -106,6 +106,7 @@ final class RuleSet implements Countable
         return $this->rules === [];
     }
 
+    #[\Override]
     public function count(): int
     {
         return count($this->rules);
