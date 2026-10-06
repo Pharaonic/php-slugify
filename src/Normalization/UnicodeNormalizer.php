@@ -34,7 +34,7 @@ final class UnicodeNormalizer
         . '\x{09DC}\x{09DD}\x{09DF}\x{0A33}\x{0A36}\x{0A59}-\x{0A5B}\x{0A5E}\x{0B5C}\x{0B5D}\x{0F43}-\x{0FB9}'
         . '\x{1100}-\x{11FF}\x{1F71}-\x{1FFD}\x{2000}\x{2001}\x{2126}\x{212A}\x{212B}\x{2329}\x{232A}\x{2ADC}'
         . '\x{A960}-\x{A97F}\x{D7B0}-\x{D7FF}\x{F900}-\x{FAFF}\x{FB1D}-\x{FB4F}\x{1D15E}-\x{1D1C0}'
-        . '\x{2F800}-\x{2FA1F}]/u';
+        . '\x{113B8}\x{113BB}\x{113C2}\x{113C9}\x{1611E}-\x{16120}\x{16129}\x{16D67}\x{2F800}-\x{2FA1F}]/u';
 
     private const COMPATIBILITY_FORMS = '/(?:[\x{FB00}-\x{FDFF}\x{FE70}-\x{FEFE}\x{FF00}-\x{FFEF}\x{1D400}-\x{1D7FF}]'
         . '|(?=\pL)[\x{2100}-\x{214F}])+/u';
