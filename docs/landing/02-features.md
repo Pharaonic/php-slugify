@@ -7,10 +7,13 @@ subtitle: One static call for everyday use, plus a fluent builder when you need 
 items:
   - icon: translate
     title: Unicode First
-    text: Arabic, Persian, Cyrillic, Greek, CJK and Indic scripts are kept as-is, and Arabic diacritics are stripped.
+    text: Arabic, Persian, Cyrillic, Greek, CJK and Indic scripts are kept as-is, with deterministic Unicode normalization.
   - icon: globe
-    title: ASCII Transliteration
-    text: Call `->ascii()` or `->ascii('de')` for Latin-only slugs, powered by voku/portable-ascii.
+    title: ASCII on Request
+    text: Call `->ascii()` for Latin-only slugs. A locale such as `de` or `uk` adds language-specific rules, but never forces ASCII.
+  - icon: shield-check
+    title: Explicit Policies
+    text: Symbols, emoji and Unicode digits each follow a deliberate, configurable policy, with no invisible residue.
   - icon: code-brackets
     title: Smart Word Splitting
     text: "`XMLHttpRequest` becomes `xml-http-request`, and `getUserID` becomes `get-user-id`."
@@ -20,7 +23,7 @@ items:
   - icon: pencil
     title: Replacement Rules
     text: Add package-wide rules with `Slugify::addRule()`, or rules for one slug only with `->rule()`.
-  - icon: shield-check
+  - icon: check
     title: Backward Compatible
     text: "`slug()`, `Slugify::get()` and `Slugify::rule()` from 2.x keep working."
 ---

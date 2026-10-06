@@ -2,7 +2,7 @@
 
 ### Custom Transliterator
 
-ASCII transliteration goes through the `Pharaonic\Slugify\Contracts\Transliterator` interface. The default implementation is `PortableAsciiTransliterator`. Implement the interface to use another engine, such as ICU:
+ASCII transliteration goes through the `Pharaonic\Slugify\Contracts\Transliterator` interface. The default is `LocaleAwareTransliterator`, which applies the curated [locale overrides](#locales) and passes everything else to `PortableAsciiTransliterator`. Implement the interface to use another engine, such as ICU:
 
 ```php title="app/Support/IntlTransliterator.php"
 namespace App\Support;
@@ -34,7 +34,15 @@ Slugify::of('Привет')
 Slugify::useTransliterator(null);                       // restore the default
 ```
 
-The transliterator only runs in ASCII mode. In ASCII mode, anything it returns outside `[A-Za-z0-9]` is treated as a word break.
+The transliterator only runs in ASCII mode, and receives the locale as `$language`. Anything it returns outside `[A-Za-z0-9]` is treated as a word break.
+
+A custom transliterator replaces both the locale overrides and portable-ascii. To keep the overrides around your own engine, wrap it:
+
+```php
+use Pharaonic\Slugify\Transliteration\LocaleAwareTransliterator;
+
+Slugify::useTransliterator(new LocaleAwareTransliterator(new IntlTransliterator()));
+```
 
 ### Using `Slugger` Directly
 
