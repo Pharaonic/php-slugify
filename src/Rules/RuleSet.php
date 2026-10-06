@@ -31,6 +31,11 @@ final class RuleSet implements Countable
     private ?array $partition = null;
 
     /**
+     * @var array{0: self, 1: self}|null
+     */
+    private ?array $transliterationSplit = null;
+
+    /**
      * @param array<array-key, string> $rules
      */
     public function __construct(array $rules = [])
@@ -41,19 +46,14 @@ final class RuleSet implements Countable
     }
 
     /**
-     * The package default rules shipped in "Resources/rules".
+     * The package default rules: only the historical "@" => "at" replacement.
+     *
+     * Symbols in general are handled by SymbolPolicy, and script-level marks
+     * (Arabic tashkeel, Hebrew points) by the Unicode normalizer.
      */
     public static function defaults(): self
     {
-        $rules = [];
-
-        foreach (['symbols', 'arabic'] as $file) {
-            /** @var array<string, string> $set */
-            $set = require __DIR__ . '/../Resources/rules/' . $file . '.php';
-            $rules += $set;
-        }
-
-        return new self($rules);
+        return new self(['@' => ' at ']);
     }
 
     public function with(string $search, string $replace): self
@@ -137,6 +137,36 @@ final class RuleSet implements Countable
     }
 
     /**
+     * Split for ASCII mode into rules applied before and after transliteration.
+     *
+     * Rules made only of ASCII letters, digits, spaces, "_", "." and "-" (e.g. "allh")
+     * run after transliteration, so they also match transliterated text. Every
+     * other rule ("ö", "$", "c++") runs first, before any policy or transliteration
+     * can change the text it targets.
+     *
+     * @return array{0: self, 1: self} [before, after]
+     */
+    public function splitForTransliteration(): array
+    {
+        if ($this->transliterationSplit !== null) {
+            return $this->transliterationSplit;
+        }
+
+        $before = [];
+        $after = [];
+
+        foreach ($this->rules as $search => $replace) {
+            if (preg_match('/^[A-Za-z0-9 _.\-]*[A-Za-z0-9][A-Za-z0-9 _.\-]*$/', (string) $search) === 1) {
+                $after[$search] = $replace;
+            } else {
+                $before[$search] = $replace;
+            }
+        }
+
+        return $this->transliterationSplit = [new self($before), new self($after)];
+    }
+
+    /**
      * Apply every rule to the given UTF-8 text.
      */
     public function apply(string $value, bool $caseInsensitive = false): string
@@ -165,6 +195,7 @@ final class RuleSet implements Countable
     {
         $this->compiled = [];
         $this->partition = null;
+        $this->transliterationSplit = null;
     }
 
     private function set(string $search, string $replace): void

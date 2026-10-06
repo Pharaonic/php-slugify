@@ -16,7 +16,7 @@ final class UnicodeTest extends TestCase
             'arabic' => ['مرحبا بالعالم', 'مرحبا-بالعالم'],
             'arabic with tashkeel' => ['مُحَمَّدٌ رَسُولُ', 'محمد-رسول'],
             'arabic with tatweel' => ['مـحـمـد', 'محمد'],
-            'arabic-indic digits' => ['الفصل ٣', 'الفصل-٣'],
+            'arabic-indic digits' => ['الفصل ٣', 'الفصل-3'],
             'persian' => ['پژوهش گروه ژاپن', 'پژوهش-گروه-ژاپن'],
             'french' => ['Crème Brûlée à la française', 'crème-brûlée-à-la-française'],
             'german' => ['Äpfel und Öl in München', 'äpfel-und-öl-in-münchen'],
@@ -44,17 +44,12 @@ final class UnicodeTest extends TestCase
 
     public function testCombiningMarksStayAttachedToTheirWord(): void
     {
-        $decomposed = "Cafe\u{0301} au lait";
-        $expected = class_exists(\Normalizer::class) ? 'café-au-lait' : "cafe\u{0301}-au-lait";
-
-        $this->assertSame($expected, Slugify::make($decomposed));
+        $this->assertSame('café-au-lait', Slugify::make("Cafe\u{0301} au lait"));
     }
 
-    public function testComposedAndDecomposedInputMatchOnlyWithIntl(): void
+    public function testComposedAndDecomposedInputMatch(): void
     {
-        $matches = Slugify::make("Cafe\u{0301}") === Slugify::make('Café');
-
-        $this->assertSame(class_exists(\Normalizer::class), $matches);
+        $this->assertSame(Slugify::make('Café'), Slugify::make("Cafe\u{0301}"));
     }
 
     public function testComposedAndDecomposedInputMatchInAsciiMode(): void

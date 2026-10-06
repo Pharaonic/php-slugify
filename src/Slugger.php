@@ -3,10 +3,15 @@
 namespace Pharaonic\Slugify;
 
 use Pharaonic\Slugify\Contracts\Transliterator;
+use Pharaonic\Slugify\Normalization\CaseNormalizer;
+use Pharaonic\Slugify\Normalization\NumberNormalizer;
+use Pharaonic\Slugify\Normalization\SeparatorNormalizer;
+use Pharaonic\Slugify\Normalization\UnicodeNormalizer;
+use Pharaonic\Slugify\Policies\EmojiPolicy;
+use Pharaonic\Slugify\Policies\SymbolPolicy;
 use Pharaonic\Slugify\Rules\RuleSet;
 use Pharaonic\Slugify\Support\CamelCase;
-use Pharaonic\Slugify\Support\Unicode;
-use Pharaonic\Slugify\Transliteration\PortableAsciiTransliterator;
+use Pharaonic\Slugify\Transliteration\LocaleAwareTransliterator;
 use Stringable;
 
 /**
@@ -14,9 +19,47 @@ use Stringable;
  *
  * Every configuration method returns a new instance, so a configured
  * builder can be safely reused and never touches global state.
+ *
+ * A slug is produced by a fixed, deterministic pipeline (STAGES), which
+ * explain() exposes step by step:
+ *
+ *   unicode_normalized    invalid UTF-8 / controls => boundaries, NFC, compatibility forms
+ *   camel_case_split      "helloWorld" => "hello World"
+ *   custom_replacements   rules (in ASCII mode, ASCII-word rules wait for transliteration)
+ *   numbers_normalized    "١٢" / "۱۲" / "¹²" / "①②" => "12"
+ *   emoji_processed       emoji policy, on whole grapheme clusters
+ *   symbols_processed     symbol policy
+ *   lowercased            locale-aware lowercasing
+ *   transliterated        ASCII mode only: locale overrides, then the generic transliterator
+ *   ascii_replacements    ASCII mode only: the rules held back for transliterated text
+ *   filtered              invisible characters dropped, words separated by single spaces
+ *   final                 words joined by the separator, within the max length
  */
 final class Slugger implements Stringable
 {
+    /**
+     * The pipeline, in order (see the class documentation).
+     *
+     * Emoji run before symbols: "©️" is an emoji, "©" is a symbol. Lowercasing runs
+     * before transliteration so the result does not depend on the input's case
+     * (the generic transliterator maps "Χ" to "X" but "χ" to "kh").
+     */
+    private const STAGES = [
+        'unicode_normalized',
+        'camel_case_split',
+        'custom_replacements',
+        'numbers_normalized',
+        'emoji_processed',
+        'symbols_processed',
+        'lowercased',
+        'transliterated',
+        'ascii_replacements',
+        'filtered',
+        'final',
+    ];
+
+    private static ?RuleSet $noRules = null;
+
     private SlugOptions $options;
 
     private RuleSet $rules;
@@ -31,7 +74,7 @@ final class Slugger implements Stringable
     ) {
         $this->options = $options !== null ? clone $options : new SlugOptions();
         $this->rules = $rules ?? new RuleSet();
-        $this->transliterator = $transliterator ?? new PortableAsciiTransliterator();
+        $this->transliterator = $transliterator ?? new LocaleAwareTransliterator();
     }
 
     public function separator(string $separator): self
@@ -49,24 +92,61 @@ final class Slugger implements Stringable
     }
 
     /**
-     * Transliterate the slug to ASCII, optionally using a language hint (e.g. "de": "ä" => "ae").
+     * Transliterate the slug to ASCII.
+     *
+     * The optional locale is a shorthand for locale($language)->ascii(): "de" => "ä" => "ae".
      */
     public function ascii(?string $language = null): self
     {
         return $this->withOption(function (SlugOptions $options) use ($language): void {
             $options->ascii = true;
-            $options->language = $language;
+            $options->language = $language ?? $options->language;
         });
     }
 
     /**
-     * Keep Unicode letters as they are (the default).
+     * Keep Unicode letters as they are (the default). The locale is kept.
      */
     public function unicode(): self
     {
         return $this->withOption(function (SlugOptions $options): void {
             $options->ascii = false;
-            $options->language = null;
+        });
+    }
+
+    /**
+     * Use language-specific behavior (e.g. "tr": "I" => "ı"; with ascii(), "de": "ä" => "ae").
+     *
+     * A locale never turns ASCII output on by itself; null removes it.
+     */
+    public function locale(?string $locale): self
+    {
+        return $this->withOption(function (SlugOptions $options) use ($locale): void {
+            $options->language = $locale;
+        });
+    }
+
+    public function symbols(SymbolPolicy $policy): self
+    {
+        return $this->withOption(function (SlugOptions $options) use ($policy): void {
+            $options->symbols = $policy;
+        });
+    }
+
+    public function emoji(EmojiPolicy $policy): self
+    {
+        return $this->withOption(function (SlugOptions $options) use ($policy): void {
+            $options->emoji = $policy;
+        });
+    }
+
+    /**
+     * Convert Unicode digits and numerals ("١٢", "۱۲", "²", "①") to ASCII digits (the default).
+     */
+    public function normalizeNumbers(bool $normalize = true): self
+    {
+        return $this->withOption(function (SlugOptions $options) use ($normalize): void {
+            $options->normalizeNumbers = $normalize;
         });
     }
 
@@ -137,29 +217,36 @@ final class Slugger implements Stringable
 
     public function toString(): string
     {
-        $options = $this->options;
-        $options->validate();
+        $this->options->validate();
 
-        $value = Unicode::normalize($this->value);
+        $value = $this->value;
 
-        if ($options->splitCamelCase) {
-            $value = CamelCase::split($value);
+        foreach (self::STAGES as $stage) {
+            $value = $this->stage($stage, $value);
         }
 
-        $value = $this->applyRulesAndTransliteration($value);
+        return $value;
+    }
 
-        if ($options->lowercase) {
-            // Lowercasing the Turkish "İ" yields "i" + U+0307 (combining dot above); keep a plain "i".
-            $value = str_replace("i\u{0307}", 'i', mb_strtolower($value, 'UTF-8'));
+    /**
+     * Run the pipeline and return the text after every stage, keyed by stage name.
+     *
+     * Meant for debugging; toString() runs the very same stages without recording them.
+     *
+     * @return array<string, string> "original", one entry per stage, ending with "final"
+     */
+    public function explain(): array
+    {
+        $this->options->validate();
+
+        $value = $this->value;
+        $steps = ['original' => $value];
+
+        foreach (self::STAGES as $stage) {
+            $steps[$stage] = $value = $this->stage($stage, $value);
         }
 
-        $words = $this->words($value, $options->ascii);
-
-        if ($words === []) {
-            return '';
-        }
-
-        return $this->join($words, $options->separator, $options->maxLength);
+        return $steps;
     }
 
     public function __toString(): string
@@ -173,82 +260,51 @@ final class Slugger implements Stringable
     }
 
     /**
-     * In ASCII mode, rules written in a non-Latin script must run before
-     * transliteration, while ASCII rules (e.g. "allh" => "allah") also need
-     * to match transliterated text, so they run afterwards.
-     */
-    private function applyRulesAndTransliteration(string $value): string
-    {
-        $caseInsensitive = $this->options->lowercase;
-
-        if (!$this->options->ascii) {
-            return $this->rules->apply($value, $caseInsensitive);
-        }
-
-        [$asciiRules, $nonAsciiRules] = $this->rules->partitionByAscii();
-
-        $value = $nonAsciiRules->apply($value, $caseInsensitive);
-        $value = $this->transliterator->transliterate($value, $this->options->language);
-
-        return $asciiRules->apply($value, $caseInsensitive);
-    }
-
-    /**
-     * Split the text into words, dropping everything that is not a letter,
-     * number or (in Unicode mode) a combining mark attached to a word.
+     * Run one pipeline stage. Every stage is a pure string => string step.
      *
-     * @return list<string>
+     * @param value-of<self::STAGES> $stage
      */
-    private function words(string $value, bool $ascii): array
+    private function stage(string $stage, string $value): string
     {
-        if ($ascii) {
-            return preg_split('/[^A-Za-z0-9]+/', $value, -1, PREG_SPLIT_NO_EMPTY) ?: [];
-        }
+        $options = $this->options;
 
-        $words = [];
+        return match ($stage) {
+            'unicode_normalized' => UnicodeNormalizer::normalize($value),
+            'camel_case_split' => $options->splitCamelCase ? CamelCase::split($value) : $value,
+            'custom_replacements' => $this->ruleStages()[0]->apply($value, $options->lowercase),
+            'numbers_normalized' => $options->normalizeNumbers ? NumberNormalizer::normalize($value) : $value,
+            'emoji_processed' => $options->emoji->apply($value),
+            'symbols_processed' => $options->symbols->apply($value, $options->language),
+            'lowercased' => $this->toLowerCase($value),
+            'transliterated' => $options->ascii
+                ? $this->toLowerCase($this->transliterator->transliterate($value, $options->language))
+                : $value,
+            'ascii_replacements' => $this->ruleStages()[1]->apply($value, $options->lowercase),
+            'filtered' => implode(' ', SeparatorNormalizer::words($value, $options->ascii)),
+            'final' => SeparatorNormalizer::join(
+                $value === '' ? [] : explode(' ', $value),
+                $options->separator,
+                $options->maxLength
+            ),
+        };
+    }
 
-        foreach (preg_split('/[^\pL\pN\pM]+/u', $value, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $word) {
-            // Orphan marks (e.g. the U+FE0F emoji variation selector) are not part of a word.
-            $word = (string) preg_replace('/^\pM+/u', '', $word);
-
-            if ($word !== '') {
-                $words[] = $word;
-            }
-        }
-
-        return $words;
+    private function toLowerCase(string $value): string
+    {
+        return $this->options->lowercase ? CaseNormalizer::lower($value, $this->options->language) : $value;
     }
 
     /**
-     * @param non-empty-list<string> $words
+     * The rules applied before the policies and, in ASCII mode, those held back
+     * until after transliteration so they match transliterated text (e.g. "allh").
+     *
+     * @return array{0: RuleSet, 1: RuleSet}
      */
-    private function join(array $words, string $separator, ?int $maxLength): string
+    private function ruleStages(): array
     {
-        $slug = implode($separator, $words);
-
-        if ($maxLength === null || mb_strlen($slug, 'UTF-8') <= $maxLength) {
-            return $slug;
-        }
-
-        $first = array_shift($words);
-
-        if (mb_strlen($first, 'UTF-8') >= $maxLength) {
-            return mb_substr($first, 0, $maxLength, 'UTF-8');
-        }
-
-        $slug = $first;
-
-        foreach ($words as $word) {
-            $candidate = $slug . $separator . $word;
-
-            if (mb_strlen($candidate, 'UTF-8') > $maxLength) {
-                break;
-            }
-
-            $slug = $candidate;
-        }
-
-        return $slug;
+        return $this->options->ascii
+            ? $this->rules->splitForTransliteration()
+            : [$this->rules, self::$noRules ??= new RuleSet()];
     }
 
     /**
