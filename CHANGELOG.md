@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## 8.3.0 - Unreleased
+## 8.3.0 - 2026-10-06
 
 The `8.3.x` line targets PHP 8.3. Slug output is identical to `8.2.0`. See [UPGRADE.md](UPGRADE.md#from-82-to-83).
 
