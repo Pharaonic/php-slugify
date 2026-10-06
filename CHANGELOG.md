@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## 8.0.1 - 2026-10-06
 
 The slug engine is now an explicit, documented pipeline: Unicode normalization, custom replacements, numbers, emoji, symbols, locale-aware lowercasing, transliteration, filtering and joining. Each concern is configured separately, and `explain()` exposes every step.
 
