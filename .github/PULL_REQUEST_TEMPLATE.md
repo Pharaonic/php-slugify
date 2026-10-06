@@ -12,7 +12,7 @@
 
 ## Backward compatibility
 
-<!-- Does this change any existing slug output or public API? If so, describe the impact and update MIGRATION.md. -->
+<!-- Does this change any existing slug output or public API? If so, describe the impact and update UPGRADE.md. -->
 
 ## Checklist
 
