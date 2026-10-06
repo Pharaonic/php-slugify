@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## 8.0.0 - 2026-10-06
 
 The `8.0.x` line is a full rebuild of the package for PHP 8.0. The package version now tracks the targeted PHP version. See [MIGRATION.md](MIGRATION.md) for upgrade notes.
 
