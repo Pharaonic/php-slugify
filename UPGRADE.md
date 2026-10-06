@@ -8,6 +8,7 @@ To upgrade, install the line that matches your PHP version. Composer picks it fo
 
 | Line    | PHP |
 |---------|-----|
+| `8.5.x` | 8.5 |
 | `8.4.x` | 8.4 |
 | `8.3.x` | 8.3 |
 | `8.2.x` | 8.2 |

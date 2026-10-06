@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## 8.5.0 - Unreleased
+
+The `8.5.x` line targets PHP 8.5. Slug output is identical to `8.4.0`. See [UPGRADE.md](UPGRADE.md#between-8x-release-lines).
+
+### Changed
+
+- **Requires PHP `>=8.5 <8.6`.** Use the `8.4.x` line on PHP 8.4.
+- PHPStan analyses against PHP 8.5, and CI falls back to PHP 8.5 on branches that are not an `8.N.x` line.
+
 ## 8.4.0 - 2026-10-06
 
 The `8.4.x` line targets PHP 8.4. Slug output is identical to `8.3.0`. See [UPGRADE.md](UPGRADE.md#between-8x-release-lines).
