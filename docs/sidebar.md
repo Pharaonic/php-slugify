@@ -1,0 +1,19 @@
+- Getting Started
+  - [Overview](#overview)
+  - [Installation](#installation)
+- Usage
+  - [Basic Usage](#basic-usage)
+  - [Unicode & ASCII](#unicode-and-ascii)
+  - [Separators](#separators)
+  - [CamelCase & Acronyms](#camel-case)
+  - [Replacement Rules](#rules)
+  - [Fluent API](#fluent-api)
+  - [Extending](#extending)
+- API Reference
+  - [Methods & Options](#api-reference)
+  - [Upgrading from 2.x](#upgrading)
+- Examples
+  - [Use Cases](#examples)
+  - [Troubleshooting](#troubleshooting)
+- Community
+  - [Contributors](#contributors)
