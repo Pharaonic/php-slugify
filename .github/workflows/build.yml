@@ -1,0 +1,120 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - '8.*.x'
+    paths-ignore:
+      - 'README.md'
+      - 'docs/**'
+      - '.github/**'
+
+  pull_request:
+    branches:
+      - '8.*.x'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  php:
+    name: Resolve PHP version
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.php.outputs.version }}
+
+    steps:
+      # Each "8.N.x" branch targets exactly PHP 8.N; any other branch uses the 8.0 baseline.
+      - name: Resolve PHP version from branch
+        id: php
+        shell: bash
+        run: |
+          BRANCH="${GITHUB_BASE_REF:-${GITHUB_REF_NAME}}"
+
+          if [[ "${BRANCH}" =~ ^8\.[0-9]+\.x$ ]]; then
+            PHP_VERSION="${BRANCH%.x}"
+          else
+            PHP_VERSION="8.0"
+          fi
+
+          echo "branch=${BRANCH} php=${PHP_VERSION}"
+          echo "version=${PHP_VERSION}" >> "$GITHUB_OUTPUT"
+
+  tests:
+    name: Tests - ${{ matrix.os }} - ${{ matrix.dependencies }}${{ matrix.intl && ' - intl' || '' }}
+    needs: php
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      max-parallel: 2
+      
+      fail-fast: false
+
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+        dependencies:
+          - lowest
+          - highest
+        intl:
+          - true
+        include:
+          # ext-intl is optional; make sure the package also works without it.
+          - os: ubuntu-latest
+            dependencies: highest
+            intl: false
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ needs.php.outputs.version }}
+          extensions: mbstring, ${{ matrix.intl && 'intl' || ':intl' }}
+          coverage: none
+          tools: composer:v2
+
+      - name: Validate Composer
+        run: composer validate --strict
+
+      - name: Install dependencies
+        uses: ramsey/composer-install@v3
+        with:
+          dependency-versions: ${{ matrix.dependencies }}
+
+      - name: Run tests
+        run: composer test
+
+  quality:
+    name: Static analysis & coding style
+    needs: php
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ needs.php.outputs.version }}
+          extensions: mbstring, intl
+          coverage: none
+          tools: composer:v2
+
+      - name: Install dependencies
+        uses: ramsey/composer-install@v3
+
+      - name: Coding style
+        run: composer lint
+
+      - name: PHPStan
+        run: composer analyse
