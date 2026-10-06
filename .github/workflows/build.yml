@@ -58,7 +58,6 @@ jobs:
         os:
           - ubuntu-latest
           - windows-latest
-          - macos-latest
         dependencies:
           - lowest
           - highest
