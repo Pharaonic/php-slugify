@@ -42,9 +42,11 @@ final class NumberNormalizer
 
         $value = (string) preg_replace('/([0-9])\x{FE0F}?\x{20E3}/u', '$1', $value);
 
-        $value = (string) preg_replace_callback('/(?![0-9])\p{Nd}/u', static function (array $match): string {
-            return self::digit($match[0]);
-        }, $value);
+        $value = (string) preg_replace_callback(
+            '/(?![0-9])\p{Nd}/u',
+            static fn (array $match): string => self::digit($match[0]),
+            $value
+        );
 
         return (string) preg_replace_callback('/([0-9]?)(\p{No}+)/u', static function (array $match): string {
             $numerals = '';

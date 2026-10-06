@@ -11,7 +11,7 @@ if (!function_exists('slug')) {
      * @param bool        $ascii_only Transliterate the slug to ASCII.
      * @param string|null $ascii_lang Language hint for ASCII transliteration.
      */
-    function slug($value, string $separator = '-', bool $ascii_only = false, ?string $ascii_lang = 'en'): string
+    function slug(mixed $value, string $separator = '-', bool $ascii_only = false, ?string $ascii_lang = 'en'): string
     {
         return Slugify::get($value, $separator, $ascii_only, $ascii_lang);
     }

@@ -22,10 +22,7 @@ final class InvalidArgumentException extends \InvalidArgumentException
         return new self('A slug rule must have a non-empty search string.');
     }
 
-    /**
-     * @param mixed $value
-     */
-    public static function unsupportedValue($value): self
+    public static function unsupportedValue(mixed $value): self
     {
         return new self(sprintf('Cannot generate a slug from a value of type [%s].', get_debug_type($value)));
     }
