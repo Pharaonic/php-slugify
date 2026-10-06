@@ -1,4 +1,4 @@
-# Migration Guide
+# Upgrade Guide
 
 ## From 2.x to 8.0
 
@@ -7,7 +7,7 @@ Version 8.0 rebuilds the package for PHP 8.0. The public 2.x API still works, bu
 ### Requirements
 
 - PHP `>=8.0 <8.1` (one release line per PHP version: `8.0.x`, `8.1.x`, ...).
-- `ext-intl` is optional and enables Unicode NFC normalization.
+- `ext-intl` is optional. Unicode NFC normalization always applies (through `symfony/polyfill-intl-normalizer` when the extension is missing); the extension only makes it faster.
 
 ### API mapping
 

@@ -11,7 +11,7 @@
 </p>
 
 <h3 align="center">Fast, framework-agnostic slug generator for PHP.</h3>
-<h5 align="center">Unicode slugs, ASCII transliteration, custom separators and replacement rules.</h5>
+<h5 align="center">Unicode-first slugs, explicit ASCII transliteration, locale-aware behavior, and deliberate symbol, emoji and number policies.</h5>
 <br>
 
 ## Documentation

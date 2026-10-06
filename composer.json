@@ -27,6 +27,7 @@
     "require": {
         "php": ">=8.0 <8.1",
         "ext-mbstring": "*",
+        "symfony/polyfill-intl-normalizer": "^1.26",
         "voku/portable-ascii": "^2.0"
     },
     "require-dev": {
@@ -35,7 +36,7 @@
         "squizlabs/php_codesniffer": "^3.13 || ^4.0"
     },
     "suggest": {
-        "ext-intl": "Normalizes decomposed Unicode input (NFC) so e.g. \"e\" + U+0301 and \"é\" produce the same slug."
+        "ext-intl": "Faster Unicode normalization than the bundled symfony/polyfill-intl-normalizer."
     },
     "config": {
         "sort-packages": true

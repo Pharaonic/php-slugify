@@ -59,7 +59,7 @@ docs/
 
 - Keep each change focused.
 - Add or update tests for behavior changes. Slug output changes need a regression entry in `tests/Fixtures/regression.php`.
-- Preserve backward compatibility whenever possible. Document any output change in `MIGRATION.md`.
+- Preserve backward compatibility whenever possible. Document any output change in `UPGRADE.md`.
 - Update `/docs` when the public API or usage changes.
 - Add an entry to `CHANGELOG.md` under `Unreleased`.
 - Do not introduce breaking changes without discussing them in an issue first.

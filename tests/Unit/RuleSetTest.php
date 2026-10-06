@@ -87,6 +87,25 @@ final class RuleSetTest extends TestCase
         $this->assertSame(['ö' => 'oe', 'ب' => 'b'], $nonAscii->all());
     }
 
+    public function testSplitForTransliteration(): void
+    {
+        $rules = new RuleSet([
+            '$' => 'd',
+            'ö' => 'oe',
+            'allh' => 'allah',
+            'c++' => 'cpp',
+            'e-mail' => 'email',
+            '1' => 'one',
+            '--' => 'dash',
+        ]);
+
+        [$before, $after] = $rules->splitForTransliteration();
+
+        $this->assertSame(['$' => 'd', 'ö' => 'oe', 'c++' => 'cpp', '--' => 'dash'], $before->all());
+        $this->assertSame(['allh' => 'allah', 'e-mail' => 'email', '1' => 'one'], $after->all());
+        $this->assertSame([$before, $after], $rules->splitForTransliteration(), 'cached');
+    }
+
     public function testHas(): void
     {
         $rules = new RuleSet(['a' => 'b']);
@@ -106,8 +125,6 @@ final class RuleSetTest extends TestCase
     {
         $defaults = RuleSet::defaults();
 
-        $this->assertSame(' at ', $defaults->all()['@']);
-        $this->assertSame('محمد', $defaults->apply('مُحَمَّد'));
-        $this->assertCount(11, $defaults);
+        $this->assertSame(['@' => ' at '], $defaults->all());
     }
 }

@@ -5,14 +5,15 @@ namespace Pharaonic\Slugify;
 use Pharaonic\Slugify\Contracts\Transliterator;
 use Pharaonic\Slugify\Exceptions\InvalidArgumentException;
 use Pharaonic\Slugify\Rules\RuleSet;
-use Pharaonic\Slugify\Transliteration\PortableAsciiTransliterator;
+use Pharaonic\Slugify\Transliteration\LocaleAwareTransliterator;
 use Stringable;
 
 /**
  * Package entry point.
  *
- * Slugify::make('Hello World');                  // hello-world
- * Slugify::of('Crème brûlée')->ascii()->toString(); // creme-brulee
+ * Slugify::make('Hello World');                     // hello-world
+ * Slugify::make('مرحبا بالعالم');                    // مرحبا-بالعالم (Unicode by default)
+ * Slugify::of('Crème brûlée')->ascii()->toString(); // creme-brulee (ASCII on request)
  */
 class Slugify
 {
@@ -33,7 +34,7 @@ class Slugify
      * @param string      $value     The text to slugify.
      * @param string      $separator Joins the words; may be empty.
      * @param bool        $ascii     Transliterate the slug to ASCII.
-     * @param string|null $language  Language hint for ASCII transliteration (e.g. "de").
+     * @param string|null $language  Locale for language-specific behavior (e.g. "de", "tr").
      */
     public static function make(
         string $value,
@@ -53,7 +54,7 @@ class Slugify
             $value,
             $options,
             self::rules(),
-            self::$transliterator ?? new PortableAsciiTransliterator()
+            self::$transliterator ?? new LocaleAwareTransliterator()
         );
     }
 
@@ -125,6 +126,9 @@ class Slugify
 
     /**
      * Replace the package-wide transliterator; null restores the default.
+     *
+     * The default applies Pharaonic's curated locale overrides around voku/portable-ascii.
+     * A custom transliterator replaces both.
      */
     public static function useTransliterator(?Transliterator $transliterator): void
     {

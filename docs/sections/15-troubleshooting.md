@@ -10,11 +10,16 @@ Slugify::make('Привет мир', '-', true);   // "privet-mir"
 
 ### German umlauts become `a`/`o`/`u` instead of `ae`/`oe`/`ue`
 
-Without a language hint, transliteration uses the generic tables. Pass `de`:
+Without a locale, transliteration uses the generic tables. Pass `de`:
 
 ```php
-Slugify::make('Äpfel', '-', true, 'de');  // "aepfel"
+Slugify::make('Äpfel', '-', true, 'de');           // "aepfel"
+Slugify::of('Äpfel')->locale('de')->ascii()->toString();   // "aepfel"
 ```
+
+### `locale('de')` doesn't give an ASCII slug
+
+That's by design: a locale never enables ASCII output. Add `->ascii()`.
 
 Or add rules: `Slugify::addRules(['ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue'])`.
 
@@ -39,6 +44,14 @@ Package-wide rules are static. Call `Slugify::resetRules()` and `Slugify::useTra
 
 The separator contains a letter, number, combining mark or whitespace. Use punctuation such as `-`, `_`, `.` or `~`, or an empty string.
 
-### Decomposed and composed input give different Unicode slugs
+### Arabic or Persian digits became `0-9`
 
-`e` + U+0301 and `é` only match in Unicode mode when `ext-intl` is installed, because that's what provides NFC normalization. Install `ext-intl`, or use ASCII mode, where both give `e`.
+Unicode digits are normalized to ASCII by default. Keep them with `->normalizeNumbers(false)`.
+
+### `&` disappears from my slug
+
+Symbols are removed by default. Spell them out with `->symbols(SymbolPolicy::words())`, or add a rule such as `->rule('&', ' and ')`.
+
+### A slug looks wrong and I can't tell why
+
+Call `->explain()` on the builder to see the text after every step of the pipeline.

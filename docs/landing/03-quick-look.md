@@ -13,7 +13,7 @@ code: |
 
   Slugify::of('Äpfel & Öl im XMLHttpRequest')
       ->ascii('de')
-      ->rule('&', ' and ')
+      ->rule('&', ' und ')
       ->maxLength(30)
-      ->toString();                              // aepfel-and-oel-im-xml-http
+      ->toString();                              // aepfel-und-oel-im-xml-http
 ---

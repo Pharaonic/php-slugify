@@ -4,6 +4,8 @@
 - Usage
   - [Basic Usage](#basic-usage)
   - [Unicode & ASCII](#unicode-and-ascii)
+  - [Locales](#locales)
+  - [Symbols, Emoji & Numbers](#symbols-and-emoji)
   - [Separators](#separators)
   - [CamelCase & Acronyms](#camel-case)
   - [Replacement Rules](#rules)

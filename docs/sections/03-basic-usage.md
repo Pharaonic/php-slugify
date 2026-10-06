@@ -11,7 +11,7 @@ Slugify::make('hello - _ world');        // "hello-world"
 Slugify::make('Top 10 Tips for 2026');   // "top-10-tips-for-2026"
 ```
 
-The full signature is `make(string $value, string $separator = '-', bool $ascii = false, ?string $language = null)`:
+The full signature is `make(string $value, string $separator = '-', bool $ascii = false, ?string $language = null)`. `$language` is the [locale](#locales):
 
 ```php
 Slugify::make('Hello World', '_');                // "hello_world"
@@ -32,14 +32,17 @@ slug(null);                         // ""
 
 ### How a Slug Is Built
 
-Each call runs the same steps in order:
+Each call runs the same deterministic steps in order. Every step can be inspected with [`explain()`](#fluent-api).
 
-1. Repair invalid UTF-8 and, when `ext-intl` is installed, normalize to NFC.
-2. Split camelCase words and acronyms.
-3. Apply the replacement rules.
-4. Transliterate to ASCII (ASCII mode only).
-5. Lowercase.
-6. Keep letters, numbers and combining marks (only `[A-Za-z0-9]` in ASCII mode), and join the words with the separator.
-7. Apply `maxLength()`, if set.
+1. **Unicode normalization**: repair invalid UTF-8, turn control characters into word breaks, normalize to NFC and fold presentation forms (`ﬁ` → `fi`).
+2. **CamelCase splitting**: `helloWorld` → `hello World`.
+3. **Replacement rules**: your rules, before anything else changes the text.
+4. **Numbers**: `١٢`, `۱۲`, `①②` → `12`.
+5. **Emoji policy**: removed by default, as whole sequences.
+6. **Symbol policy**: removed by default.
+7. **Lowercasing**, locale-aware (`tr`: `I` → `ı`).
+8. **Transliteration** (ASCII mode only): locale overrides, then portable-ascii. In ASCII mode, rules made of ASCII words (`allh` → `allah`) run right after this step.
+9. **Filtering**: invisible characters are dropped. Letters, numbers and combining marks are kept (only `[A-Za-z0-9]` in ASCII mode).
+10. **Joining**: words joined with the separator, within `maxLength()` if set.
 
 Empty results are returned as `""`. `"0"` is treated as real input and gives `"0"`.

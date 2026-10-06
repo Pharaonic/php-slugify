@@ -4,7 +4,46 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
-The `8.0.x` line is a full rebuild of the package for PHP 8.0. The package version now tracks the targeted PHP version. See [MIGRATION.md](MIGRATION.md) for upgrade notes.
+The slug engine is now an explicit, documented pipeline: Unicode normalization, custom replacements, numbers, emoji, symbols, locale-aware lowercasing, transliteration, filtering and joining. Each concern is configured separately, and `explain()` exposes every step.
+
+### Added
+
+- `->locale()`. A locale selects language-specific behavior and never enables ASCII output by itself. `->ascii('de')` remains a shorthand for `->locale('de')->ascii()`.
+- `SymbolPolicy` (`remove()` by default, `words()`, `custom()`) and `->symbols()`. `words()` uses portable-ascii's per-language symbol words (`&` → `and` / `und` / `ve`, currencies), falling back to English.
+- `EmojiPolicy` (`remove()` by default, `custom()`) and `->emoji()`. Emoji are matched as whole grapheme clusters (ZWJ sequences, skin tones, flags, keycaps, tag sequences), so no joiner, selector or modifier is ever left behind.
+- Number normalization, on by default in both modes, with `->normalizeNumbers(false)` to opt out. Decimal digits of every script (`١٢`, `۱۲`, `१२`, `１２`) and unambiguous compatibility numerals (`¹²`, `₁₂`, `①②`, `⑴`, `⒈`, `1️⃣`) become ASCII digits. Fractions and Roman numerals are left alone, and an exponent never merges into its base (`10²` → `10-2`).
+- `->explain()`, which returns the text after every pipeline stage as structured data.
+- `LocaleAwareTransliterator`, now the default transliterator. It applies curated locale overrides, then delegates to a wrapped generic transliterator.
+- A Ukrainian ASCII override implementing the official 2010 national transliteration (`Київ` → `kyiv`, `Запоріжжя` → `zaporizhzhia`). portable-ascii maps `ж` to `z` and has no word-initial forms.
+- Turkish and Azerbaijani lowercasing (`IŞIK` → `ışık` with `locale('tr')`).
+- A locale evaluation corpus (`tests/Fixtures/Transliteration`, 19 languages). The suite fails if a locale override isn't justified by a failing generic result.
+- `SlugOptions::$symbols`, `SlugOptions::$emoji` and `SlugOptions::$normalizeNumbers`, plus `RuleSet::splitForTransliteration()`.
+- `symfony/polyfill-intl-normalizer` dependency. NFC normalization is now always applied, with or without `ext-intl`.
+
+### Changed
+
+- **Unicode digits are normalized to ASCII by default**: `الفصل ٣` → `الفصل-3` (was `الفصل-٣`). Use `->normalizeNumbers(false)` to keep native digits.
+- **Text is lowercased before transliteration**, so ASCII output no longer depends on the input's case. Greek was the visible case: `Γειά σου` gave `geia-soy` but `γειά σου` gave `gheia-soy`; both now give `gheia-soy`.
+- `e` + U+0301 and `é` now give the same slug in Unicode mode without `ext-intl` too.
+- Presentation-only compatibility forms are folded: ligatures (`ﬁ`), full/half-width forms, Arabic presentation forms and mathematical alphanumerics.
+- Invisible format characters (ZWJ, ZWNJ, soft hyphen, bidi marks, BOM, word joiner) are removed instead of splitting a word. The zero-width space, control characters and null bytes are word breaks.
+- Hebrew points (niqqud) are removed like Arabic tashkeel, so vocalized and plain spellings match.
+- The Arabic alef wasla (`ٱ`) becomes a plain alef, so Quranic and everyday spellings match: `ٱلْحَمْدُ` → `الحمد` (Unicode) / `alhmd` (ASCII, was `lhmd`).
+- Arabic tashkeel stripping moved from the default rules into Unicode normalization. `RuleSet::defaults()` / `Slugify::rules()` now contain only `@` → `at`.
+- In ASCII mode, only rules made of ASCII letters, digits, spaces, `_`, `.` and `-` run after transliteration. Rules containing other ASCII symbols (`$`, `c++`) now run first, so they always take precedence over the symbol policy.
+- `->ascii()` without an argument keeps the current locale, and `->unicode()` no longer clears it.
+- Locales with a region or script subtag (`uk-UA`, `fr-CA`, `sr-Latn`) now fall back to their base language for portable-ascii, instead of being treated as unknown.
+- `maxLength()` never cuts a word inside a grapheme cluster.
+- `MIGRATION.md` is renamed to `UPGRADE.md`.
+
+### Fixed
+
+- Keycap sequences (`1️⃣`) left the enclosing keycap mark in Unicode slugs.
+- A stray variation selector or ZWJ after a letter (`a\u{FE0F}`) stayed in the Unicode slug.
+
+## 8.0.0 - 2026-10-06
+
+The `8.0.x` line is a full rebuild of the package for PHP 8.0. The package version now tracks the targeted PHP version. See [UPGRADE.md](UPGRADE.md) for upgrade notes.
 
 ### Added
 

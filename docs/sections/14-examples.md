@@ -21,7 +21,7 @@ final class PermalinkGenerator
 
 ### 2. Multilingual Site
 
-Keep native-script slugs for Arabic content, and use ASCII slugs with a language hint for German:
+Keep native-script slugs for Arabic content, and use ASCII slugs with the locale for German:
 
 ```php
 use Pharaonic\Slugify\Slugify;

@@ -10,6 +10,8 @@ parameters:
         # to its generic tables for unknown codes, which is the contract we rely on.
         -
             identifier: argument.type
-            message: '#voku\\helper\\ASCII::to_ascii\(\) expects#'
-            path: src/Transliteration/PortableAsciiTransliterator.php
+            message: '#voku\\helper\\ASCII::(to_ascii|charsArrayWithOneLanguage)\(\) expects#'
+            paths:
+                - src/Transliteration/PortableAsciiTransliterator.php
+                - src/Policies/SymbolPolicy.php
             reportUnmatched: false # older voku releases declare a plain string

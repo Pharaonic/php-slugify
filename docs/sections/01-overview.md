@@ -6,14 +6,17 @@
 
 # Slugify
 
-Fast, framework-agnostic slug generation for PHP. Turn any string into a URL-friendly slug. By default it keeps Unicode letters as they are. You can also transliterate to ASCII, use any separator, split camelCase words and acronyms, and plug in your own replacement rules.
+Fast, framework-agnostic slug generation for PHP. Turn any string into a URL-friendly slug. By default it keeps Unicode letters as they are. ASCII is opt-in, locales only change language-specific behavior, and symbols, emoji and numbers each follow an explicit policy. Same input, same slug, every time.
 
 :::features
 ### Unicode First {icon="translate"}
 `مرحبا بالعالم` → `مرحبا-بالعالم`, `Привет мир` → `привет-мир`.
 
 ### ASCII on Demand {icon="globe"}
-`Crème brûlée` → `creme-brulee`, with language hints such as `de`.
+`Crème brûlée` → `creme-brulee`. Add a locale such as `de` or `uk` for language-specific results.
+
+### Explicit Policies {icon="shield-check"}
+Symbols, emoji and Unicode numbers are handled on purpose, not by accident: `الإصدار ١٢` → `الإصدار-12`.
 
 ### Replacement Rules {icon="pencil"}
 Package-wide or per slug, with no state leaking between calls.
