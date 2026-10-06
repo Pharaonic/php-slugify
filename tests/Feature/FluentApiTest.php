@@ -8,6 +8,7 @@ use Pharaonic\Slugify\Slugify;
 use Pharaonic\Slugify\Slugger;
 use Pharaonic\Slugify\Tests\Fixtures\UppercaseTransliterator;
 use Pharaonic\Slugify\Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class FluentApiTest extends TestCase
 {
@@ -107,7 +108,7 @@ final class FluentApiTest extends TestCase
     /**
      * @return array<string, array{string, int, string, string}>
      */
-    public function maxLengthProvider(): array
+    public static function maxLengthProvider(): array
     {
         return [
             'shorter than limit' => ['Hello World', 20, '-', 'hello-world'],
@@ -122,9 +123,7 @@ final class FluentApiTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider maxLengthProvider
-     */
+    #[DataProvider('maxLengthProvider')]
     public function testMaxLength(string $input, int $max, string $separator, string $expected): void
     {
         $slug = Slugify::of($input)->separator($separator)->maxLength($max)->toString();

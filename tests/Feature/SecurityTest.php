@@ -4,6 +4,7 @@ namespace Pharaonic\Slugify\Tests\Feature;
 
 use Pharaonic\Slugify\Slugify;
 use Pharaonic\Slugify\Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Arbitrary, untrusted input must always yield a well-formed slug.
@@ -13,7 +14,7 @@ final class SecurityTest extends TestCase
     /**
      * @return array<string, array{0: string, 1: string, 2?: string}>
      */
-    public function inputProvider(): array
+    public static function inputProvider(): array
     {
         return [
             'null byte' => ["foo\0bar", 'foo-bar'],
@@ -45,9 +46,7 @@ final class SecurityTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider inputProvider
-     */
+    #[DataProvider('inputProvider')]
     public function testUntrustedInput(string $input, string $expected, ?string $expectedAscii = null): void
     {
         $this->assertSame($expected, Slugify::make($input));
@@ -55,8 +54,14 @@ final class SecurityTest extends TestCase
     }
 
     /**
-     * @dataProvider inputProvider
+     * @return array<string, array{string}>
      */
+    public static function rawInputProvider(): array
+    {
+        return array_map(static fn (array $case): array => [$case[0]], self::inputProvider());
+    }
+
+    #[DataProvider('rawInputProvider')]
     public function testOutputIsAlwaysValidAndVisible(string $input): void
     {
         $slug = Slugify::make($input);

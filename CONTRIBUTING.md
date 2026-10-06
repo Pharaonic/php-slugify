@@ -11,6 +11,7 @@ Each release line targets exactly one PHP version, and the branch name tells you
 8.1.x → PHP 8.1
 8.2.x → PHP 8.2
 8.3.x → PHP 8.3
+8.4.x → PHP 8.4
 ...
 ```
 
@@ -37,8 +38,8 @@ git remote add upstream https://github.com/Pharaonic/php-slugify.git
 Check out the branch that matches the PHP version you are targeting:
 
 ```bash
-git checkout 8.3.x
-git pull upstream 8.3.x
+git checkout 8.4.x
+git pull upstream 8.4.x
 ```
 
 ## Create a working branch

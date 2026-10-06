@@ -7,13 +7,14 @@ use Pharaonic\Slugify\Policies\EmojiPolicy;
 use Pharaonic\Slugify\Policies\SymbolPolicy;
 use Pharaonic\Slugify\Slugify;
 use Pharaonic\Slugify\Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class EmojiTest extends TestCase
 {
     /**
      * @return array<string, array{string}>
      */
-    public function emojiProvider(): array
+    public static function emojiProvider(): array
     {
         return [
             'single' => ['🚀'],
@@ -38,9 +39,7 @@ final class EmojiTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider emojiProvider
-     */
+    #[DataProvider('emojiProvider')]
     public function testEmojiAreRemovedWithoutResidue(string $emoji): void
     {
         $this->assertSame('php-rocks', Slugify::make("PHP {$emoji} Rocks"));
@@ -49,9 +48,7 @@ final class EmojiTest extends TestCase
         $this->assertSame('php-rocks', Slugify::make("PHP {$emoji} Rocks", '-', true));
     }
 
-    /**
-     * @dataProvider emojiProvider
-     */
+    #[DataProvider('emojiProvider')]
     public function testEmojiNextToUnicodeLettersLeaveNoResidue(string $emoji): void
     {
         $this->assertSame('مرحبا-بالعالم', Slugify::make("مرحبا{$emoji}بالعالم"));

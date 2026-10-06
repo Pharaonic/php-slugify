@@ -4,6 +4,7 @@ namespace Pharaonic\Slugify\Tests\Unit;
 
 use Pharaonic\Slugify\Exceptions\InvalidArgumentException;
 use Pharaonic\Slugify\SlugOptions;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class SlugOptionsTest extends TestCase
@@ -32,7 +33,7 @@ final class SlugOptionsTest extends TestCase
     /**
      * @return array<string, array{string}>
      */
-    public function validSeparatorProvider(): array
+    public static function validSeparatorProvider(): array
     {
         return [
             'dash' => ['-'],
@@ -44,12 +45,10 @@ final class SlugOptionsTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider validSeparatorProvider
-     */
+    #[DataProvider('validSeparatorProvider')]
     public function testValidSeparators(string $separator): void
     {
-        (new SlugOptions($separator))->validate();
+        new SlugOptions($separator)->validate();
 
         $this->addToAssertionCount(1);
     }
@@ -57,7 +56,7 @@ final class SlugOptionsTest extends TestCase
     /**
      * @return array<string, array{string}>
      */
-    public function invalidSeparatorProvider(): array
+    public static function invalidSeparatorProvider(): array
     {
         return [
             'letter' => ['a'],
@@ -69,14 +68,12 @@ final class SlugOptionsTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider invalidSeparatorProvider
-     */
+    #[DataProvider('invalidSeparatorProvider')]
     public function testInvalidSeparators(string $separator): void
     {
         $this->expectException(InvalidArgumentException::class);
 
-        (new SlugOptions($separator))->validate();
+        new SlugOptions($separator)->validate();
     }
 
     public function testInvalidMaxLength(): void
@@ -84,6 +81,6 @@ final class SlugOptionsTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('[-1]');
 
-        (new SlugOptions(maxLength: -1))->validate();
+        new SlugOptions(maxLength: -1)->validate();
     }
 }

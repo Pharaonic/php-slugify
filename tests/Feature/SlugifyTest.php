@@ -5,13 +5,14 @@ namespace Pharaonic\Slugify\Tests\Feature;
 use Pharaonic\Slugify\Exceptions\InvalidArgumentException;
 use Pharaonic\Slugify\Slugify;
 use Pharaonic\Slugify\Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class SlugifyTest extends TestCase
 {
     /**
      * @return array<string, array{string, string}>
      */
-    public function basicProvider(): array
+    public static function basicProvider(): array
     {
         return [
             'words' => ['Hello World', 'hello-world'],
@@ -27,9 +28,7 @@ final class SlugifyTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider basicProvider
-     */
+    #[DataProvider('basicProvider')]
     public function testBasicSlugs(string $input, string $expected): void
     {
         $this->assertSame($expected, Slugify::make($input));
@@ -38,7 +37,7 @@ final class SlugifyTest extends TestCase
     /**
      * @return array<string, array{string, string}>
      */
-    public function separatorProvider(): array
+    public static function separatorProvider(): array
     {
         return [
             'dash' => ['-', 'hello-big-world'],
@@ -51,17 +50,13 @@ final class SlugifyTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider separatorProvider
-     */
+    #[DataProvider('separatorProvider')]
     public function testSeparators(string $separator, string $expected): void
     {
         $this->assertSame($expected, Slugify::make('Hello big World', $separator));
     }
 
-    /**
-     * @dataProvider separatorProvider
-     */
+    #[DataProvider('separatorProvider')]
     public function testExistingSeparatorsAreNormalized(string $separator, string $expected): void
     {
         $this->assertSame($expected, Slugify::make('-hello__big.. ~world-', $separator));
@@ -70,7 +65,7 @@ final class SlugifyTest extends TestCase
     /**
      * @return array<string, array{string}>
      */
-    public function invalidSeparatorProvider(): array
+    public static function invalidSeparatorProvider(): array
     {
         return [
             'letter' => ['x'],
@@ -80,9 +75,7 @@ final class SlugifyTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider invalidSeparatorProvider
-     */
+    #[DataProvider('invalidSeparatorProvider')]
     public function testInvalidSeparatorsAreRejected(string $separator): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -93,7 +86,7 @@ final class SlugifyTest extends TestCase
     /**
      * @return array<string, array{string, string}>
      */
-    public function edgeCaseProvider(): array
+    public static function edgeCaseProvider(): array
     {
         return [
             'empty' => ['', ''],
@@ -110,9 +103,7 @@ final class SlugifyTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider edgeCaseProvider
-     */
+    #[DataProvider('edgeCaseProvider')]
     public function testEdgeCases(string $input, string $expected): void
     {
         $this->assertSame($expected, Slugify::make($input));
@@ -132,7 +123,7 @@ final class SlugifyTest extends TestCase
     /**
      * @return array<string, array{string, string}>
      */
-    public function camelCaseProvider(): array
+    public static function camelCaseProvider(): array
     {
         return [
             'camelCase' => ['helloWorld', 'hello-world'],
@@ -151,9 +142,7 @@ final class SlugifyTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider camelCaseProvider
-     */
+    #[DataProvider('camelCaseProvider')]
     public function testCamelCaseAndAcronyms(string $input, string $expected): void
     {
         $this->assertSame($expected, Slugify::make($input));

@@ -4,13 +4,14 @@ namespace Pharaonic\Slugify\Tests\Feature;
 
 use Pharaonic\Slugify\Slugify;
 use Pharaonic\Slugify\Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class UnicodeTest extends TestCase
 {
     /**
      * @return array<string, array{string, string}>
      */
-    public function unicodeProvider(): array
+    public static function unicodeProvider(): array
     {
         return [
             'arabic' => ['مرحبا بالعالم', 'مرحبا-بالعالم'],
@@ -34,9 +35,7 @@ final class UnicodeTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider unicodeProvider
-     */
+    #[DataProvider('unicodeProvider')]
     public function testUnicodeIsPreserved(string $input, string $expected): void
     {
         $this->assertSame($expected, Slugify::make($input));

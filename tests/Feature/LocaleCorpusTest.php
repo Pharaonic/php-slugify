@@ -5,6 +5,7 @@ namespace Pharaonic\Slugify\Tests\Feature;
 use Pharaonic\Slugify\Slugify;
 use Pharaonic\Slugify\Tests\TestCase;
 use Pharaonic\Slugify\Transliteration\PortableAsciiTransliterator;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * The locale evaluation corpus (tests/Fixtures/Transliteration).
@@ -22,7 +23,7 @@ final class LocaleCorpusTest extends TestCase
     /**
      * @return array<string, array{string, string, string, string|null}>
      */
-    public function corpusProvider(): array
+    public static function corpusProvider(): array
     {
         $cases = [];
 
@@ -40,9 +41,7 @@ final class LocaleCorpusTest extends TestCase
         return $cases;
     }
 
-    /**
-     * @dataProvider corpusProvider
-     */
+    #[DataProvider('corpusProvider')]
     public function testCorpus(string $locale, string $input, string $ascii, ?string $unicode): void
     {
         $this->assertSame($ascii, Slugify::of($input)->locale($locale)->ascii()->toString());
@@ -55,7 +54,7 @@ final class LocaleCorpusTest extends TestCase
     /**
      * @return array<string, array{string}>
      */
-    public function overrideProvider(): array
+    public static function overrideProvider(): array
     {
         $locales = [];
 
@@ -67,9 +66,7 @@ final class LocaleCorpusTest extends TestCase
         return $locales;
     }
 
-    /**
-     * @dataProvider overrideProvider
-     */
+    #[DataProvider('overrideProvider')]
     public function testEveryOverrideIsJustifiedByTheCorpus(string $locale): void
     {
         $corpus = self::corpus();
@@ -105,21 +102,20 @@ final class LocaleCorpusTest extends TestCase
     /**
      * @return array<string, array{string}>
      */
-    public function genericLocaleProvider(): array
+    public static function genericLocaleProvider(): array
     {
         return array_diff_key(
             array_map(static function (string $locale): array {
                 return [$locale];
             }, array_combine(array_keys(self::corpus()), array_keys(self::corpus())) ?: []),
-            $this->overrideProvider()
+            self::overrideProvider()
         );
     }
 
     /**
      * Locales without an override are fully served by portable-ascii.
-     *
-     * @dataProvider genericLocaleProvider
      */
+    #[DataProvider('genericLocaleProvider')]
     public function testLocalesWithoutOverrideUseTheGenericTransliterator(string $locale): void
     {
         foreach (self::corpus()[$locale] as $sample) {

@@ -11,7 +11,7 @@ final class SluggerTest extends TestCase
 {
     public function testStandaloneUsageHasNoRules(): void
     {
-        $this->assertSame('user-host', (new Slugger('user@host'))->toString());
+        $this->assertSame('user-host', new Slugger('user@host')->toString());
     }
 
     public function testExplicitRuleSet(): void
@@ -26,7 +26,7 @@ final class SluggerTest extends TestCase
 
     public function testOptionsAreExposedAsACopy(): void
     {
-        $slugger = (new Slugger('x'))
+        $slugger = new Slugger('x')
             ->separator('_')
             ->ascii('de')
             ->maxLength(5)

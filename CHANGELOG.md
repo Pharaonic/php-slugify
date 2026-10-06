@@ -2,9 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## 8.4.0 - Unreleased
+
+The `8.4.x` line targets PHP 8.4. Slug output is identical to `8.3.0`. See [UPGRADE.md](UPGRADE.md#between-8x-release-lines).
+
+### Changed
+
+- **Requires PHP `>=8.4 <8.5`.** Use the `8.3.x` line on PHP 8.3.
+- Requires `voku/portable-ascii` `^2.0.2`. Earlier 2.0 releases declare implicitly nullable parameters, which PHP 8.4 deprecates.
+- The test suite runs on PHPUnit 12: data providers are static and declared with `#[DataProvider]` attributes, and deprecations still fail the run (`failOnDeprecation`).
+- PHPStan `^2.0` is required for development, since 1.x cannot parse PHP 8.4 syntax.
+- The test suite calls methods on new instances without wrapping parentheses (`new RuleSet([...])->merge(...)`).
+- PHPStan analyses against PHP 8.4, and CI falls back to PHP 8.4 on branches that are not an `8.N.x` line.
+
+### Fixed
+
+- Digits from the scripts added in Unicode 15 to 17 (Kawi, Nag Mundari, Garay, Sunuwar, Gurung Khema, Kirat Rai, Ol Onal, Tolong Siki, Myanmar Pa-O and Eastern Pwo Karen, and outlined digits) are converted to ASCII digits.
+- Unicode normalization no longer skips Tulu-Tigalari, Gurung Khema and Kirat Rai text when PHP's PCRE library uses older Unicode data than ext-intl.
+
 ## 8.3.0 - 2026-10-06
 
-The `8.3.x` line targets PHP 8.3. Slug output is identical to `8.2.0`. See [UPGRADE.md](UPGRADE.md#from-82-to-83).
+The `8.3.x` line targets PHP 8.3. Slug output is identical to `8.2.0`. See [UPGRADE.md](UPGRADE.md#between-8x-release-lines).
 
 ### Changed
 
@@ -15,7 +33,7 @@ The `8.3.x` line targets PHP 8.3. Slug output is identical to `8.2.0`. See [UPGR
 
 ## 8.2.0 - 2026-10-06
 
-The `8.2.x` line targets PHP 8.2. Slug output is identical to `8.1.0`. See [UPGRADE.md](UPGRADE.md#from-81-to-82).
+The `8.2.x` line targets PHP 8.2. Slug output is identical to `8.1.0`. See [UPGRADE.md](UPGRADE.md#between-8x-release-lines).
 
 ### Changed
 
@@ -25,7 +43,7 @@ The `8.2.x` line targets PHP 8.2. Slug output is identical to `8.1.0`. See [UPGR
 
 ## 8.1.0 - 2026-10-06
 
-The `8.1.x` line targets PHP 8.1. Slug output is identical to `8.0.1`. See [UPGRADE.md](UPGRADE.md#from-80-to-81).
+The `8.1.x` line targets PHP 8.1. Slug output is identical to `8.0.1`. See [UPGRADE.md](UPGRADE.md#between-8x-release-lines).
 
 ### Changed
 

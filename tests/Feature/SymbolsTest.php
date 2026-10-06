@@ -7,13 +7,14 @@ use Pharaonic\Slugify\Policies\SymbolPolicy;
 use Pharaonic\Slugify\SlugOptions;
 use Pharaonic\Slugify\Slugify;
 use Pharaonic\Slugify\Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class SymbolsTest extends TestCase
 {
     /**
      * @return array<string, array{string, string}>
      */
-    public function defaultProvider(): array
+    public static function defaultProvider(): array
     {
         return [
             'ampersand' => ['R&D', 'r-d'],
@@ -27,9 +28,7 @@ final class SymbolsTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider defaultProvider
-     */
+    #[DataProvider('defaultProvider')]
     public function testSymbolsAreRemovedByDefault(string $input, string $expected): void
     {
         $this->assertSame($expected, Slugify::make($input));
@@ -39,7 +38,7 @@ final class SymbolsTest extends TestCase
     /**
      * @return array<string, array{string, string|null, string}>
      */
-    public function wordsProvider(): array
+    public static function wordsProvider(): array
     {
         return [
             'ampersand' => ['R&D', null, 'r-and-d'],
@@ -55,9 +54,7 @@ final class SymbolsTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider wordsProvider
-     */
+    #[DataProvider('wordsProvider')]
     public function testWords(string $input, ?string $locale, string $expected): void
     {
         $this->assertSame($expected, Slugify::of($input)->locale($locale)->symbols(SymbolPolicy::words())->toString());

@@ -7,6 +7,7 @@ use Pharaonic\Slugify\Policies\SymbolPolicy;
 use Pharaonic\Slugify\SlugOptions;
 use Pharaonic\Slugify\Slugify;
 use Pharaonic\Slugify\Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class PipelineTest extends TestCase
 {
@@ -112,7 +113,7 @@ final class PipelineTest extends TestCase
     /**
      * @return array<string, array{string, int, string}>
      */
-    public function graphemeProvider(): array
+    public static function graphemeProvider(): array
     {
         return [
             'devanagari conjunct is not split' => ['नमस्ते', 4, 'नमस्'],
@@ -123,9 +124,7 @@ final class PipelineTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider graphemeProvider
-     */
+    #[DataProvider('graphemeProvider')]
     public function testMaxLengthNeverSplitsAGrapheme(string $input, int $max, string $expected): void
     {
         $slug = Slugify::of($input)->maxLength($max)->toString();
