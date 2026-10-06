@@ -26,7 +26,7 @@ final readonly class EmojiPolicy
      * Characters that may start or belong to an emoji sequence; text without any
      * of them is returned untouched.
      */
-    private const CANDIDATES = '/[\x{2300}-\x{2BFF}\x{3030}\x{303D}\x{3297}\x{3299}\x{FE0F}\x{20E3}'
+    private const string CANDIDATES = '/[\x{2300}-\x{2BFF}\x{3030}\x{303D}\x{3297}\x{3299}\x{FE0F}\x{20E3}'
         . '\x{1F000}-\x{1FAFF}\x{E0020}-\x{E007F}]/u';
 
     /**
@@ -35,13 +35,13 @@ final readonly class EmojiPolicy
      * emoji presentation ("©️", "‼️") or a "#"/"*" keycap. Digit keycaps are numbers
      * (NumberNormalizer).
      */
-    private const EMOJI = '/(?=(?!\pN)[\x{1F000}-\x{1FAFF}\x{2300}-\x{23FF}\x{2600}-\x{27BF}\x{2B00}-\x{2BFF}'
+    private const string EMOJI = '/(?=(?!\pN)[\x{1F000}-\x{1FAFF}\x{2300}-\x{23FF}\x{2600}-\x{27BF}\x{2B00}-\x{2BFF}'
         . '\x{3030}\x{303D}\x{3297}\x{3299}\x{E0020}-\x{E007F}]|[\p{S}\p{Po}]\x{FE0F}|[#*]\x{FE0F}?\x{20E3})\X/u';
 
     /**
      * Variation selectors and skin-tone modifiers, ignored when looking up custom words.
      */
-    private const VARIANTS = '/[\x{FE0E}\x{FE0F}\x{1F3FB}-\x{1F3FF}]/u';
+    private const string VARIANTS = '/[\x{FE0E}\x{FE0F}\x{1F3FB}-\x{1F3FF}]/u';
 
     /**
      * @param array<string, string> $map
