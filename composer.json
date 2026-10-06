@@ -25,7 +25,7 @@
         "security": "https://github.com/Pharaonic/php-slugify/security/policy"
     },
     "require": {
-        "php": ">=8.2 <8.3",
+        "php": ">=8.3 <8.4",
         "ext-mbstring": "*",
         "symfony/polyfill-intl-normalizer": "^1.26",
         "voku/portable-ascii": "^2.0"
