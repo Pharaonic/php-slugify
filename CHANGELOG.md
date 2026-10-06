@@ -15,6 +15,11 @@ The `8.4.x` line targets PHP 8.4. Slug output is identical to `8.3.0`. See [UPGR
 - The test suite calls methods on new instances without wrapping parentheses (`new RuleSet([...])->merge(...)`).
 - PHPStan analyses against PHP 8.4, and CI falls back to PHP 8.4 on branches that are not an `8.N.x` line.
 
+### Fixed
+
+- Digits from the scripts added in Unicode 15 to 17 (Kawi, Nag Mundari, Garay, Sunuwar, Gurung Khema, Kirat Rai, Ol Onal, Tolong Siki, Myanmar Pa-O and Eastern Pwo Karen, and outlined digits) are converted to ASCII digits.
+- Unicode normalization no longer skips Tulu-Tigalari, Gurung Khema and Kirat Rai text when PHP's PCRE library uses older Unicode data than ext-intl.
+
 ## 8.3.0 - 2026-10-06
 
 The `8.3.x` line targets PHP 8.3. Slug output is identical to `8.2.0`. See [UPGRADE.md](UPGRADE.md#between-8x-release-lines).
