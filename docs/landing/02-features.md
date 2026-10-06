@@ -23,7 +23,4 @@ items:
   - icon: pencil
     title: Replacement Rules
     text: Add package-wide rules with `Slugify::addRule()`, or rules for one slug only with `->rule()`.
-  - icon: check
-    title: Backward Compatible
-    text: "`slug()`, `Slugify::get()` and `Slugify::rule()` from 2.x keep working."
 ---
