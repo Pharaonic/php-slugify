@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## 8.2.1 - 2026-10-06
+
+### Fixed
+
+- Digits from the scripts added in Unicode 15 to 17 (Kawi, Nag Mundari, Garay, Sunuwar, Gurung Khema, Kirat Rai, Ol Onal, Tolong Siki, Myanmar Pa-O and Eastern Pwo Karen, and outlined digits) are converted to ASCII digits.
+- Unicode normalization no longer skips Tulu-Tigalari, Gurung Khema and Kirat Rai text when PHP's PCRE library uses older Unicode data than ext-intl.
+
 ## 8.2.0 - 2026-10-06
 
 The `8.2.x` line targets PHP 8.2. Slug output is identical to `8.1.0`. See [UPGRADE.md](UPGRADE.md#from-81-to-82).
