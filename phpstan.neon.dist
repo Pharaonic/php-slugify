@@ -1,0 +1,15 @@
+parameters:
+    level: 9
+    paths:
+        - src
+        - tests
+        - benchmarks
+    ignoreErrors:
+        # voku/portable-ascii documents $language as a union of its built-in codes,
+        # but at runtime it normalizes any string ("de-DE" => "de") and falls back
+        # to its generic tables for unknown codes, which is the contract we rely on.
+        -
+            identifier: argument.type
+            message: '#voku\\helper\\ASCII::to_ascii\(\) expects#'
+            path: src/Transliteration/PortableAsciiTransliterator.php
+            reportUnmatched: false # older voku releases declare a plain string

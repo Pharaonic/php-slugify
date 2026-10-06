@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<ruleset name="Pharaonic PHP Slugify">
+    <description>PSR-12 coding standard for pharaonic/php-slugify.</description>
+    <file>src</file>
+    <file>tests</file>
+    <file>benchmarks</file>
+    <arg name="colors"/>
+    <arg name="extensions" value="php"/>
+    <rule ref="PSR12"/>
+</ruleset>

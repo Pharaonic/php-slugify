@@ -1,33 +1,48 @@
 {
     "name": "pharaonic/php-slugify",
-    "description": "Simplest Slugify for PHP",
+    "description": "Fast, framework-agnostic slug generation for PHP with Unicode, transliteration, custom separators, and configurable replacement rules.",
     "keywords": [
         "php",
         "slug",
         "slugify",
-        "sluggable"
+        "sluggable",
+        "unicode",
+        "transliteration",
+        "url"
     ],
+    "type": "library",
     "license": "MIT",
     "authors": [
         {
-            "name": "Moamen Eltouny",
+            "name": "Moamen Eltouny (Raggi)",
             "email": "raggigroup@gmail.com"
         }
     ],
+    "homepage": "https://github.com/Pharaonic/php-slugify",
+    "support": {
+        "issues": "https://github.com/Pharaonic/php-slugify/issues",
+        "source": "https://github.com/Pharaonic/php-slugify",
+        "security": "https://github.com/Pharaonic/php-slugify/security/policy"
+    },
     "require": {
-        "php": "^8.0",
+        "php": ">=8.0 <8.1",
         "ext-mbstring": "*",
         "voku/portable-ascii": "^2.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.0"
+        "phpstan/phpstan": "^1.12 || ^2.0",
+        "phpunit/phpunit": "^9.6",
+        "squizlabs/php_codesniffer": "^3.13 || ^4.0"
+    },
+    "suggest": {
+        "ext-intl": "Normalizes decomposed Unicode input (NFC) so e.g. \"e\" + U+0301 and \"é\" produce the same slug."
     },
     "config": {
         "sort-packages": true
     },
     "autoload": {
         "psr-4": {
-            "Pharaonic\\Slugify\\": "src"
+            "Pharaonic\\Slugify\\": "src/"
         },
         "files": [
             "src/helpers.php"
@@ -35,9 +50,21 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Pharaonic\\Slugify\\Tests\\": "tests"
+            "Pharaonic\\Slugify\\Tests\\": "tests/"
         }
     },
-    "minimum-stability": "dev",
+    "scripts": {
+        "test": "phpunit",
+        "analyse": "phpstan analyse",
+        "lint": "phpcs",
+        "format": "phpcbf",
+        "benchmark": "@php benchmarks/run.php",
+        "check": [
+            "@lint",
+            "@analyse",
+            "@test"
+        ]
+    },
+    "minimum-stability": "stable",
     "prefer-stable": true
 }
