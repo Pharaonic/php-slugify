@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## 8.3.0 - Unreleased
+
+The `8.3.x` line targets PHP 8.3. Slug output is identical to `8.2.0`. See [UPGRADE.md](UPGRADE.md#from-82-to-83).
+
+### Changed
+
+- **Requires PHP `>=8.3 <8.4`.** Use the `8.2.x` line on PHP 8.2.
+- Class constants declare their type (`const string`).
+- Methods that implement an interface (`Transliterator::transliterate()`, `Stringable::__toString()`, `Countable::count()`) carry `#[\Override]`.
+- PHPStan analyses against PHP 8.3, and CI falls back to PHP 8.3 on branches that are not an `8.N.x` line.
+
 ## 8.2.0 - 2026-10-06
 
 The `8.2.x` line targets PHP 8.2. Slug output is identical to `8.1.0`. See [UPGRADE.md](UPGRADE.md#from-81-to-82).
