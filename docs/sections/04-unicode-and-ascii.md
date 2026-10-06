@@ -23,7 +23,6 @@ Arabic diacritics (tashkeel), the tatweel and Hebrew points (niqqud) are removed
 Slugify::make('مُحَمَّد');             // "محمد"
 Slugify::make('مـحـمـد');             // "محمد"
 Slugify::make('ٱلْحَمْدُ');            // "الحمد"
-Slugify::make('שָׁלוֹם');              // "שלום"
 ```
 
 ### ASCII Slugs
