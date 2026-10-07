@@ -6,7 +6,7 @@ Install the package with Composer. There is nothing to register or publish.
 
 - PHP 8.1.x (each `8.x` release line targets the matching PHP version)
 - `ext-mbstring`
-- `voku/portable-ascii` ^2.0 and `symfony/polyfill-intl-normalizer` (installed automatically)
+- `voku/portable-ascii` ^1.6.1 or ^2.0 and `symfony/polyfill-intl-normalizer` (installed automatically)
 - `ext-intl` *(optional)*: Unicode normalization works without it, but the native extension is faster than the polyfill.
 
 ### Composer Installation
