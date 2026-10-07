@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## 8.0.4 - Unreleased
+
+### Added
+
+- Support for `voku/portable-ascii` 1.x (`^1.6.1 || ^2.0`), so the package installs alongside Laravel 7 and 8, which require portable-ascii 1.x.
+
+### Fixed
+
+- With portable-ascii 1.x, the letters it transliterates differently from 2.x are given the 2.x result, so a slug is the same with either version: Persian `پ` (`p`, was `b`) and `ج` (`j`), the generic Cyrillic `ё ъ ы э ю я` (`Мэр` → `mer`, was `me-r`), and a few Ukrainian and Latin map entries. The list comes from comparing every BMP letter across every portable-ascii language.
+
 ## 8.0.3 - 2026-10-06
 
 ### Fixed
