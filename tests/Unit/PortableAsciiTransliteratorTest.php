@@ -29,6 +29,12 @@ final class PortableAsciiTransliteratorTest extends TestCase
             'known regional variant' => ['Straße', 'de-AT', 'Strasze'],
             'script subtag falls back to the language' => ['Đorđe', 'sr-Latn', 'Djordje'],
             'unknown language is generic' => ['Äpfel', 'xx-YY', 'Apfel'],
+            // Same result with portable-ascii 1.x and 2.x (Resources/portable-ascii-1.php).
+            'cyrillic e keeps the word whole' => ['Мэр', null, 'Mer'],
+            'cyrillic generic letters' => ['ёлка объявление', null, 'elka obieiavlenie'],
+            'cyrillic language map wins' => ['ёлка', 'ru', 'yolka'],
+            'persian peh' => ['پ', null, 'p'],
+            'persian language map' => ['پنجره', 'fa', 'pnjrh'],
         ];
     }
 
